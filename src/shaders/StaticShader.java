@@ -54,16 +54,16 @@ public class StaticShader extends ShaderProgram {
 	}
 
 	public void loadTransformationMatrix(Matrix4f matrix) {
-		super.LoadMatrix(location_tranformationMatrix, matrix);
+		super.loadMatrix(location_tranformationMatrix, matrix);
 
 	}
 	public void loadProjectionMatrix(Matrix4f projection){
-		super.LoadMatrix(location_projectionMatrix, projection);
+		super.loadMatrix(location_projectionMatrix, projection);
 	}
 	
 	public void loadViewMatrix(Camera camera){
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.LoadMatrix(location_viewMatrix, viewMatrix);
+		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}
 	
 	public void loadLightPosition(Light light){

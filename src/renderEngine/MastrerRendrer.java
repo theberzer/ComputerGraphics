@@ -1,6 +1,8 @@
 package renderEngine;
 
 import shaders.StaticShader;
+import shaders.TerrainShader;
+
 import java.util.Map;
 
 import org.lwjgl.opengl.Display;
@@ -32,8 +34,10 @@ public class MastrerRendrer {
 
 	private StaticShader shader = new StaticShader();
 	private EntityRenderer renderer;
-
-	;
+	
+	private TerrainRenderer terrainRenderer;
+	private TerrainShader terrainShader = new TerrainShader();
+	
 
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 
@@ -42,6 +46,7 @@ public class MastrerRendrer {
 		GL11.glCullFace(GL11.GL_BACK);
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
+		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 	}
 
 	public void render(Light sun, Camera camera) {
