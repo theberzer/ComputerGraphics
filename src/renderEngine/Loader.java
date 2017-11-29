@@ -40,6 +40,14 @@ public class Loader {
 		return new RawModel(vaoID, indicies.length);
 	}
 	
+	//2nd contructor. Mainly for water plane use
+	public RawModel loadToVAO(float[] positions, int dimensions) {
+        int vaoID = createVAO();
+        this.storeDatainAttributeList(0, dimensions, positions);
+        unbindVAO();
+        return new RawModel(vaoID, positions.length / dimensions);
+    }
+	
 	public int loadTexture(String fileName){
 		Texture texture = null;
 		try {
