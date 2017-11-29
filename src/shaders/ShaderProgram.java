@@ -50,7 +50,7 @@ public abstract class ShaderProgram {
 		GL20.glUseProgram(0);
 	}
 
-	public void cleanUP() {
+	public void cleanUp() {
 		stop();
 		GL20.glDetachShader(programID, fragmentShaderID);
 		GL20.glDetachShader(programID, vertexShaderID);
