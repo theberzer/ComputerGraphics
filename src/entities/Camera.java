@@ -107,4 +107,9 @@ public class Camera {
 		return roll;
 	}
 
+	public void invertPitch() {
+		pitch = -pitch;
+		
+	}
+
 }
