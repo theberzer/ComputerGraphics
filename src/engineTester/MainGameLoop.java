@@ -15,6 +15,10 @@ import renderEngine.Loader;
 import renderEngine.MastrerRendrer;
 import renderEngine.OBJLoader;
 import textures.ModelTexture;
+import water.WaterFrameBuffer;
+import water.WaterRenderer;
+import water.WaterShader;
+import water.WaterTile;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
@@ -34,6 +38,8 @@ public class MainGameLoop {
 		// Start
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		// Create a new instance of the MasterRendrer object
+		MastrerRendrer renderer = new MastrerRendrer();
 
 		// Dragon
 		RawModel modelDragon = OBJLoader.loadObjModel("dragon", loader);
@@ -127,13 +133,25 @@ public class MainGameLoop {
 			}
 			x += j * (-3) - 1.5f;
 		}
+		
+		//water
+		WaterShader waterShader = new WaterShader();
+		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
+		
+		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
+		//Creates a plane at a position (the x and y position is in the centre of the side)
+		waterTiles.add(new WaterTile(20,-20, -1));
+		
+		//Framebuffer to be rendered to. Doesn't have anny visual effect yet.
+		//If you are struggling for gpu power, comment this line out:
+		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
+		
+		
 
 		// Light and Camera entities
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
 		Camera camera = new Camera();
 
-		// Create a new instance of the MasterRendrer object
-		MastrerRendrer renderer = new MastrerRendrer();
 
 		// Main loop that will run until you press close
 		while (!Display.isCloseRequested()) {
@@ -164,7 +182,16 @@ public class MainGameLoop {
 				renderer.processEntity(e);
 				i++;
 			}
-
+			
+			
+			//This doesn't have anny visual effects yet. Don't remove
+			//If you are struggling for gpu power, comment these lines out:
+			//////////////////////////////////////////////////
+			waterFrameBuffer.bindReflectionFrameBuffer();
+			renderer.render(light, camera);
+			waterFrameBuffer.unbindFrameBuffer();
+			// //////////////////////////////////////////////
+			
 			renderer.processEntity(dragon);
 			renderer.processEntity(car);
 			renderer.processEntity(bottle);
@@ -172,7 +199,8 @@ public class MainGameLoop {
 			renderer.processEntity(lego2);
 			renderer.processEntity(pokeball);
 			renderer.render(light, camera);
-
+			waterRenderer.render(waterTiles, camera);
+			
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
 		}
@@ -180,8 +208,10 @@ public class MainGameLoop {
 		// Clean up - deletes instances of the object so that it does not clog
 		// up your memory
 		renderer.cleanUp();
-		loader.cleanUP();
-
+		loader.cleanUp();
+		waterShader.cleanUp();
+		waterFrameBuffer.cleanUp();
+		
 		// Close
 		DisplayManager.closeDisplay();
 
