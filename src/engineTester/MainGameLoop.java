@@ -222,6 +222,7 @@ public class MainGameLoop {
 			
 			//Moves the camera back to the original position
 			camera.getPosition().y += cameraDistance;
+			camera.invertPitch();
 			
 			renderer.render(light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
 			waterFrameBuffer.unbindFrameBuffer();
