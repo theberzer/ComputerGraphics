@@ -8,7 +8,10 @@ import models.RawModel;
 import models.TexturedModel;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
@@ -134,17 +137,6 @@ public class MainGameLoop {
 			x += j * (-3) - 1.5f;
 		}
 		
-		//water
-		WaterShader waterShader = new WaterShader();
-		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
-		
-		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
-		//Creates a plane at a position (the x and y position is in the centre of the side)
-		waterTiles.add(new WaterTile(20,-20, -1));
-		
-		//Framebuffer to be rendered to. Doesn't have anny visual effect yet.
-		//If you are struggling for gpu power, comment this line out:
-		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
 		
 		
 
@@ -152,12 +144,33 @@ public class MainGameLoop {
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
 		Camera camera = new Camera();
 
-
+		
+		//water
+		WaterShader waterShader = new WaterShader();
+		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
+		
+		
+		//Creates a plane at a position (the x and y position is in the centre of the side)
+		WaterTile waterTile = new WaterTile(20,-20, -1);
+		
+		List<WaterTile> waterTileList = new ArrayList<>();
+		waterTileList.add(waterTile);
+		
+		
+		
+		//Framebuffer to be rendered to. Doesn't have anny visual effect yet.
+		//If you are struggling for gpu power, comment this line out:
+		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
+		
+		
 		// Main loop that will run until you press close
 		while (!Display.isCloseRequested()) {
 			// updates the camera position once per frame
 			camera.move();
 			dragon.increaseRotation(0, 0.5f, 0);
+			
+			
+		
 
 			// Render entities
 			for (Entity e : models) {
@@ -184,13 +197,7 @@ public class MainGameLoop {
 			}
 			
 			
-			//This doesn't have anny visual effects yet. Don't remove
-			//If you are struggling for gpu power, comment these lines out:
-			//////////////////////////////////////////////////
-			waterFrameBuffer.bindReflectionFrameBuffer();
-			renderer.render(light, camera);
-			waterFrameBuffer.unbindFrameBuffer();
-			// //////////////////////////////////////////////
+			
 			
 			renderer.processEntity(dragon);
 			renderer.processEntity(car);
@@ -198,11 +205,41 @@ public class MainGameLoop {
 			renderer.processEntity(lego);
 			renderer.processEntity(lego2);
 			renderer.processEntity(pokeball);
-			renderer.render(light, camera);
-			waterRenderer.render(waterTiles, camera);
 			
+			
+			
+			//This doesn't have anny visual effects yet. Don't remove
+			//If you are struggling for gpu power, comment these lines out:
+			//////////////////////////////////////////////////
+			
+			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+			waterFrameBuffer.bindReflectionFrameBuffer();
+			
+			//Needs to move the camera to properly capture the "reflected" image
+			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight());
+			camera.getPosition().y -= cameraDistance;
+			camera.invertPitch();
+			
+			//Moves the camera back to the original position
+			camera.getPosition().y += cameraDistance;
+			
+			renderer.render(light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
+			waterFrameBuffer.unbindFrameBuffer();
+			/*
+			waterFrameBuffer.bindRefractionFrameBuffer();
+			renderer.render(light, camera, new Vector4f(0, -1, 0, waterTile.getHeight()));
+			waterFrameBuffer.unbindFrameBuffer();
+			// //////////////////////////////////////////////
+			*/
+			
+			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
+			
+			renderer.render(light, camera, new Vector4f(0, 1, 0, 10000));
+			waterRenderer.render(waterTileList, camera);
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
+			
+			renderer.cleanUpEntities();
 		}
 
 		// Clean up - deletes instances of the object so that it does not clog
@@ -212,6 +249,7 @@ public class MainGameLoop {
 		waterShader.cleanUp();
 		waterFrameBuffer.cleanUp();
 		
+	
 		// Close
 		DisplayManager.closeDisplay();
 
