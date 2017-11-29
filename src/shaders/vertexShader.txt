@@ -15,9 +15,12 @@ uniform mat4 tranformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
+//This is used to define the height of where the engine stops rendering reflections
+uniform vec4 plane;
 
 void main(){
 	//calculations helping with finding the relative position of the object in relation to light sources
+	
 	vec4 worldPostion = tranformationMatrix * vec4(position, 1.0);
 	gl_Position = projectionMatrix * viewMatrix  * worldPostion;
 	pass_textureCoords = textureCoords;
@@ -25,4 +28,8 @@ void main(){
 	surfaceNormal = (tranformationMatrix * vec4(normal, 0.0)).xyz;
 	toLightVector = lightPosition - worldPostion.xyz;
 	toCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPostion.xyz;	
+	
+	//Calculating distance from a hight to the plane (variable "plane")
+	//This is mainly for water testing. Can be commented out!
+	gl_ClipDistance[0] = dot(worldPostion, plane) ;
 }
