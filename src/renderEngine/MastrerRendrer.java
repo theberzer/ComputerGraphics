@@ -19,7 +19,7 @@ import models.TexturedModel;
 /**
  * @author berzi
  * 
- *         MasterRenderer class that i will utilise to create all objects that
+ *         MasterRenderer class that is utilized to create all objects that
  *         need rendering
  *
  */
