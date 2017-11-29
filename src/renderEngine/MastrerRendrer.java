@@ -94,7 +94,10 @@ public class MastrerRendrer {
 		shader.cleanUp();
 	}
 	
-	//Removes the entities from the hashMap
+	/**
+	 * Because the way water reflection/refraction is implemented, the scene (different parts of it) has to be rendered multiple times. 
+	 * The renderer now only clears the hashMap after the display is updated, NOT after each render
+	 */
 	public void cleanUpEntities() {
 		entities.clear();
 	}
