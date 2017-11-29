@@ -6,6 +6,7 @@ import java.util.Map;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,14 +45,16 @@ public class MastrerRendrer {
 		renderer = new EntityRenderer(shader, projectionMatrix);
 	}
 
-	public void render(Light sun, Camera camera) {
+	public void render(Light sun, Camera camera, Vector4f clipPlane) {
 		prepare();
 		shader.start();
+		
+		shader.loadClipPlane(clipPlane);
 		shader.loadLightPosition(sun);
 		shader.loadViewMatrix(camera);
 		renderer.render(entities);
+		
 		shader.stop();
-		entities.clear();
 	}
 
 	public void processEntity(Entity entity) {
@@ -89,6 +92,11 @@ public class MastrerRendrer {
 
 	public void cleanUp() {
 		shader.cleanUp();
+	}
+	
+	//Removes the entities from the hashMap
+	public void cleanUpEntities() {
+		entities.clear();
 	}
 	
     public Matrix4f getProjectionMatrix() {
