@@ -88,7 +88,7 @@ public class MastrerRendrer {
 	}
 
 	public void cleanUp() {
-		shader.cleanUP();
+		shader.cleanUp();
 	}
 	
     public Matrix4f getProjectionMatrix() {

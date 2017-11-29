@@ -28,6 +28,8 @@ public class Camera {
 		// with the camera movement
 		
 		//code for grabbing and freeing mouse is not from youtube @KimB
+		
+		
 		//free mouse from window if the escape key is pressed, or grab mouse if user want to focus window again
 		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			focusWindow = false;
