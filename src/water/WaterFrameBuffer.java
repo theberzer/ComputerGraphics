@@ -71,7 +71,7 @@ public class WaterFrameBuffer {
     }
 	
     //Changes what framebuffer that is being drawn to, from default screen frame buffer, to the created framebuffer
-  	public void bindFrameBuffer(int framebuffer, int width, int height) {
+  	private void bindFrameBuffer(int framebuffer, int width, int height) {
   		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
   		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, framebuffer);
   		GL11.glViewport(0,0,width, height);
