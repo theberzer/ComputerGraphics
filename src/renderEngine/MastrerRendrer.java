@@ -90,4 +90,8 @@ public class MastrerRendrer {
 	public void cleanUp() {
 		shader.cleanUP();
 	}
+	
+    public Matrix4f getProjectionMatrix() {
+    	return projectionMatrix;
+    }
 }
