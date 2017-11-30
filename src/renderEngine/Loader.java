@@ -40,6 +40,14 @@ public class Loader {
 		return new RawModel(vaoID, indicies.length);
 	}
 	
+	//A basic loader to load 2d textures onto a 2d plane 
+	public RawModel loadToVAO(float[] position) {
+		int vaoID = createVAO();
+		this.storeDatainAttributeList(0, 2, position);
+		unbindVAO();
+		return new RawModel(vaoID, position.length/2);
+	}
+	
 	//2nd contructor. Mainly for water plane use
 	public RawModel loadToVAO(float[] positions, int dimensions) {
         int vaoID = createVAO();

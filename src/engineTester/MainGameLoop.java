@@ -10,6 +10,7 @@ import models.TexturedModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -25,6 +26,8 @@ import water.WaterTile;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import gui.GuiRenderer;
+import gui.GuiTexture;
 
 /**
  * @author berzi
@@ -144,6 +147,15 @@ public class MainGameLoop {
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
 		Camera camera = new Camera();
 
+		//GUI TEST
+		GuiRenderer guiRenderer = new GuiRenderer(loader);
+		List<GuiTexture> guis = new ArrayList<GuiTexture>();
+		GuiTexture gui = new GuiTexture(loader.loadTexture("texture"), new Vector2f(0.5f,0.5f), new Vector2f(0.25f,0.25f));
+		guis.add(gui);
+		
+		
+		
+		
 		
 		//water
 		WaterShader waterShader = new WaterShader();
@@ -236,7 +248,9 @@ public class MainGameLoop {
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 			
 			renderer.render(light, camera, new Vector4f(0, 1, 0, 10000));
+			
 			waterRenderer.render(waterTileList, camera);
+			guiRenderer.render(guis);
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
 			
@@ -249,6 +263,7 @@ public class MainGameLoop {
 		loader.cleanUp();
 		waterShader.cleanUp();
 		waterFrameBuffer.cleanUp();
+		guiRenderer.cleanUp();
 		
 	
 		// Close
