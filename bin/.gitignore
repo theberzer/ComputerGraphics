@@ -1,5 +1,6 @@
+/gui/
 /renderEngine/
-/water/
-/shaders/
-/entities/
 /engineTester/
+/shaders/
+/toolbox/
+/water/

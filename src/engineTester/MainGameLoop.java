@@ -146,34 +146,31 @@ public class MainGameLoop {
 		// Light and Camera entities
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
 		Camera camera = new Camera();
-
+		
+		/*
 		//GUI TEST
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
 		List<GuiTexture> guis = new ArrayList<GuiTexture>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture("texture"), new Vector2f(0.5f,0.5f), new Vector2f(0.25f,0.25f));
-		guis.add(gui);
-		
-		
-		
+		 */
 		
 		
 		//water
+		
+		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
 		WaterShader waterShader = new WaterShader();
-		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
+		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFrameBuffer);
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(20,-20, -1);
+		WaterTile waterTile = new WaterTile(50 ,0, -1);
 		
 		List<WaterTile> waterTileList = new ArrayList<>();
 		waterTileList.add(waterTile);
 		
-		
-		
-		//Framebuffer to be rendered to. Doesn't have anny visual effect yet.
-		//If you are struggling for gpu power, comment this line out:
-		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
-		
+		/*
+		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(0.25f, 0.25f), new Vector2f(0.25f, 0.25f));
+		guis.add(reflectionGui);
+		*/
 		
 		// Main loop that will run until you press close
 		while (!Display.isCloseRequested()) {
@@ -238,19 +235,19 @@ public class MainGameLoop {
 			
 			renderer.render(light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
 			waterFrameBuffer.unbindFrameBuffer();
-			/*
+			
 			waterFrameBuffer.bindRefractionFrameBuffer();
 			renderer.render(light, camera, new Vector4f(0, -1, 0, waterTile.getHeight()));
 			waterFrameBuffer.unbindFrameBuffer();
 			// //////////////////////////////////////////////
-			*/
+			
 			
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 			
 			renderer.render(light, camera, new Vector4f(0, 1, 0, 10000));
 			
 			waterRenderer.render(waterTileList, camera);
-			guiRenderer.render(guis);
+			//guiRenderer.render(guis);
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
 			
@@ -263,7 +260,7 @@ public class MainGameLoop {
 		loader.cleanUp();
 		waterShader.cleanUp();
 		waterFrameBuffer.cleanUp();
-		guiRenderer.cleanUp();
+		//guiRenderer.cleanUp();
 		
 	
 		// Close
