@@ -1,8 +1,9 @@
-package water;
+package renderEngine;
 
 import java.util.List;
 
 import models.RawModel;
+import shaders.WaterShader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -11,8 +12,9 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import renderEngine.Loader;
 import toolbox.Maths;
+import water.WaterFrameBuffer;
+import water.WaterTile;
 import entities.Camera;
 /**
  * @author Kim Nilsen Brusevold
