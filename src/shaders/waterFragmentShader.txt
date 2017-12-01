@@ -2,6 +2,7 @@
 
 in vec4 clipSpace;
 
+
 out vec4 out_Color;
 
 uniform sampler2D reflectionTexture;
@@ -9,13 +10,13 @@ uniform sampler2D refractionTexture;
 
 void main(void) {
 	
-	vec2 normalizedDC = (clipSpace.xy/clipSpace.w)/(2 + 0.5);
-	vec2 reflectionUvCoordinates = vec2(normalizedDC.x, -normalizedDC.y);
-	vec2 refractionUvCoordinates = vec2(normalizedDC.x, normalizedDC.y);
+	vec2 normalizedDC = (clipSpace.xy/clipSpace.w) / 2.0 + 0.5;
 	
+	vec2 refractionUV = vec2(normalizedDC.x, normalizedDC.y);
+	vec2 reflectionUV = vec2(normalizedDC.x, -normalizedDC.y);
 	
-	vec4 reflectionColor = texture(reflectionTexture, reflectionUvCoordinates);
-	vec4 refractionColor = texture(refractionTexture, refractionUvCoordinates);
+	vec4 refractionTexture = texture(refractionTexture, refractionUV);
+	vec4 reflectionTexture = texture(reflectionTexture, reflectionUV);
 	
-	out_Color = mix(reflectionColor, refractionColor, 0.5);
+	out_Color = mix(reflectionTexture, refractionTexture, 0.5);
 }
