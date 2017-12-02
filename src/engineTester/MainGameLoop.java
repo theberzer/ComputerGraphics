@@ -33,6 +33,8 @@ public class MainGameLoop {
 	/**
 	 * @param args
 	 */
+	private static final int SEED = new Random().nextInt(1000000000);
+	
 	public static void main(String[] args) {
 		// Start
 		DisplayManager.createDisplay();
@@ -48,14 +50,12 @@ public class MainGameLoop {
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+		int x = -1;
+		int z = -1;
+		Terrain terrain = new Terrain(x, z, SEED, loader , texturePack, blendMap, "heightmap");
+;
 		
-		Terrain terrain = new Terrain(0, 01, loader , texturePack, blendMap, "heightmap");
-		Terrain terrain1 = new Terrain(1, 1, loader , texturePack, blendMap, "heightmap");
-				
-		
-		
-		
-
+	
 
 		// Light and Camera entities
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
@@ -64,16 +64,26 @@ public class MainGameLoop {
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer();
 
+		
 		// Main loop that will run until you press close
 		while (!Display.isCloseRequested()) {
 			// updates the camera position once per frame
 			camera.move();
-			
+
 			//Render Terrain
+			if (camera.getPosition().x < (x / 2) ) {
+
+			}
+			
+			
+			/*Terrain terrain1 = new Terrain(x + 1 , z + 1, loader , texturePack, blendMap, "heightmap");
+			Terrain terrain2 = new Terrain(2, 1, loader , texturePack, blendMap, "heightmap");
+			Terrain terrain3 = new Terrain(1, 2, loader , texturePack, blendMap, "heightmap");
 			renderer.processTerrain(terrain);
 			renderer.processTerrain(terrain1);
-
-
+			renderer.processTerrain(terrain2);*/
+			renderer.processTerrain(terrain);
+			//Ligts and Camera
 			renderer.render(light, camera);
 
 			// Updates the display once per frame

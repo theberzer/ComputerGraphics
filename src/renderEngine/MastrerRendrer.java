@@ -27,10 +27,13 @@ import models.TexturedModel;
  *
  */
 public class MastrerRendrer {
-	private static final float FOV = 70;
+	private static final float FOV = 100;
 	private static final float NEAR_PLANE = 0.01f;
-	private static final float FAR_PLANE = 1000;
-
+	private static final float FAR_PLANE = 3000;
+	private static final float R = 0.2f;
+	private static final float G = 0.3f;
+	private static final float B = 0.2f;
+	
 	private Matrix4f projectionMatrix;
 
 	private StaticShader shader = new StaticShader();
@@ -53,6 +56,7 @@ public class MastrerRendrer {
 	public void render(Light sun, Camera camera) {
 		prepare();
 		shader.start();
+		shader.loadSkyColour(R, G, B);
 		shader.loadLightPosition(sun);
 		shader.loadViewMatrix(camera);
 		renderer.render(entities);
@@ -85,7 +89,7 @@ public class MastrerRendrer {
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(0.2f, 0.1f, 0f, 1);
+		GL11.glClearColor(R, G, B, 1);
 	}
 
 	private void createProjectionMatrix() {
