@@ -20,7 +20,7 @@ void main(){
 	//calculations helping with finding the relative position of the object in relation to light sources
 	vec4 worldPostion = tranformationMatrix * vec4(position, 1.0);
 	gl_Position = projectionMatrix * viewMatrix  * worldPostion;
-	pass_textureCoords = textureCoords;
+	pass_textureCoords = textureCoords * 40.0;
 
 	surfaceNormal = (tranformationMatrix * vec4(normal, 0.0)).xyz;
 	toLightVector = lightPosition - worldPostion.xyz;

@@ -2,6 +2,7 @@ package renderEngine;
 
 import shaders.StaticShader;
 import shaders.TerrainShader;
+import terrains.Terrain;
 
 import java.util.Map;
 
@@ -35,18 +36,18 @@ public class MastrerRendrer {
 	private StaticShader shader = new StaticShader();
 	private EntityRenderer renderer;
 	
-	private TerrainRenderer terrainRenderer;
+	private TerrainRenderer terrainRendrer;
 	private TerrainShader terrainShader = new TerrainShader();
-	
 
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	private List<Terrain> terrains = new ArrayList<Terrain>();
 
 	public MastrerRendrer() {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
-		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+		terrainRendrer = new TerrainRenderer(terrainShader, projectionMatrix);
 	}
 
 	public void render(Light sun, Camera camera) {
@@ -56,7 +57,17 @@ public class MastrerRendrer {
 		shader.loadViewMatrix(camera);
 		renderer.render(entities);
 		shader.stop();
+		terrainShader.start();
+		terrainShader.loadLight(sun);
+		terrainShader.loadViewMatrix(camera);
+		terrainRendrer.render(terrains);
+		terrainShader.stop();
+		terrains.clear();
 		entities.clear();
+	}
+	
+	public void processTerrain(Terrain terrain) {
+		terrains.add(terrain);
 	}
 
 	public void processEntity(Entity entity) {
@@ -94,5 +105,6 @@ public class MastrerRendrer {
 
 	public void cleanUp() {
 		shader.cleanUP();
+		terrainShader.cleanUP();
 	}
 }

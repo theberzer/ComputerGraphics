@@ -25,7 +25,6 @@ public class Camera {
 		// This code was found in a comment during a binge on youtube and helps
 		// with the camera movement
 		float arg_yaw = Mouse.getDX();
-		System.out.println(arg_yaw);
 		yaw += arg_yaw / 10;
 		float arg_roll = Mouse.getDY();
 		pitch += -(arg_roll / 10);
