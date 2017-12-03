@@ -1,12 +1,5 @@
-<<<<<<< Updated upstream
-/terrains/
-/renderEngine/
-/shaders/
-=======
-/renderEngine/
-/entities/
-/shaders/
-/toolbox/
->>>>>>> Stashed changes
-/engineTester/
 /textures/
+/renderEngine/
+/skyBox/
+/shaders/
+/engineTester/

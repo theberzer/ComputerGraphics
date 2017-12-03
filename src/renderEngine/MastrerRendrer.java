@@ -37,21 +37,24 @@ public class MastrerRendrer {
 	
 	private Matrix4f projectionMatrix;
 
-	private StaticShader shader = new StaticShader();
-	private EntityRenderer renderer;
 	
-	private TerrainRenderer terrainRendrer;
+	private StaticShader shader = new StaticShader();
 	private TerrainShader terrainShader = new TerrainShader();
 
+	private EntityRenderer renderer;
+	private TerrainRenderer terrainRendrer;
+	private SkyBoxRenderer skyboxRendrer;
+	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 
-	public MastrerRendrer() {
+	public MastrerRendrer(Loader loader) {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRendrer = new TerrainRenderer(terrainShader, projectionMatrix);
+		skyboxRendrer = new SkyBoxRenderer(loader, projectionMatrix);
 	}
 
 	public void render(Light sun, Camera camera) {
@@ -62,12 +65,16 @@ public class MastrerRendrer {
 		shader.loadViewMatrix(camera);
 		renderer.render(entities);
 		shader.stop();
+		
 		terrainShader.start();
 		terrainShader.loadSkyColour(R, G, B);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
 		terrainRendrer.render(terrains);
 		terrainShader.stop();
+		
+		skyboxRendrer.render(camera);
+		
 		terrains.clear();
 		entities.clear();
 	}

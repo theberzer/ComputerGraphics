@@ -53,7 +53,6 @@ public class MainGameLoop {
 		int x = -1;
 		int z = -1;
 		Terrain terrain = new Terrain(x, z, SEED, loader , texturePack, blendMap, "heightmap");
-;
 		
 	
 
@@ -62,7 +61,7 @@ public class MainGameLoop {
 		Camera camera = new Camera();
 
 		// Create a new instance of the MasterRendrer object
-		MastrerRendrer renderer = new MastrerRendrer();
+		MastrerRendrer renderer = new MastrerRendrer(loader);
 
 		
 		// Main loop that will run until you press close
