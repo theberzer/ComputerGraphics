@@ -24,6 +24,7 @@ import models.TexturedModel;
  * 
  *         MasterRenderer class that i will utilise to create all objects that
  *         need rendering
+ *         
  *
  */
 public class MastrerRendrer {
@@ -62,6 +63,7 @@ public class MastrerRendrer {
 		renderer.render(entities);
 		shader.stop();
 		terrainShader.start();
+		terrainShader.loadSkyColour(R, G, B);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
 		terrainRendrer.render(terrains);
