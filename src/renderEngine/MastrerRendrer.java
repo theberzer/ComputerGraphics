@@ -30,7 +30,7 @@ import models.TexturedModel;
 public class MastrerRendrer {
 	private static final float FOV = 100;
 	private static final float NEAR_PLANE = 0.01f;
-	private static final float FAR_PLANE = 3000;
+	private static final float FAR_PLANE = 4000;
 	private static final float R = 0.258823f;
 	private static final float G = 0.956863f;
 	private static final float B = 0.843137f;
@@ -59,6 +59,7 @@ public class MastrerRendrer {
 
 	public void render(Light sun, Camera camera) {
 		prepare();
+		
 		shader.start();
 		shader.loadSkyColour(R, G, B);
 		shader.loadLightPosition(sun);
@@ -73,7 +74,8 @@ public class MastrerRendrer {
 		terrainRendrer.render(terrains);
 		terrainShader.stop();
 		
-		skyboxRendrer.render(camera);
+		//TODO reactivate
+		//skyboxRendrer.render(camera);
 		
 		terrains.clear();
 		entities.clear();
