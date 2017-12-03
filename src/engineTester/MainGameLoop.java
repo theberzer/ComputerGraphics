@@ -76,12 +76,7 @@ public class MainGameLoop {
 			}
 			
 			
-			/*Terrain terrain1 = new Terrain(x + 1 , z + 1, loader , texturePack, blendMap, "heightmap");
-			Terrain terrain2 = new Terrain(2, 1, loader , texturePack, blendMap, "heightmap");
-			Terrain terrain3 = new Terrain(1, 2, loader , texturePack, blendMap, "heightmap");
-			renderer.processTerrain(terrain);
-			renderer.processTerrain(terrain1);
-			renderer.processTerrain(terrain2);*/
+	
 			renderer.processTerrain(terrain);
 			//Ligts and Camera
 			renderer.render(light, camera);

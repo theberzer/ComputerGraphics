@@ -30,9 +30,9 @@ public class MastrerRendrer {
 	private static final float FOV = 100;
 	private static final float NEAR_PLANE = 0.01f;
 	private static final float FAR_PLANE = 3000;
-	private static final float R = 0.2f;
-	private static final float G = 0.3f;
-	private static final float B = 0.2f;
+	private static final float R = 0.258823f;
+	private static final float G = 0.956863f;
+	private static final float B = 0.843137f;
 	
 	private Matrix4f projectionMatrix;
 
