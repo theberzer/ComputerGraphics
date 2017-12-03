@@ -31,9 +31,9 @@ public class MastrerRendrer {
 	private static final float FOV = 100;
 	private static final float NEAR_PLANE = 0.01f;
 	private static final float FAR_PLANE = 4000;
-	private static final float R = 0.258823f;
-	private static final float G = 0.956863f;
-	private static final float B = 0.843137f;
+	private static final float R = 0.87843f;
+	private static final float G = 0.97647f;
+	private static final float B = 0.97647f;
 	
 	private Matrix4f projectionMatrix;
 
@@ -57,29 +57,43 @@ public class MastrerRendrer {
 		skyboxRendrer = new SkyBoxRenderer(loader, projectionMatrix);
 	}
 
-	public void render(Light sun, Camera camera) {
+	
+	public void render(List<Terrain> terrains, List<Entity> entities, Light sun, Camera camera) {
+		for (Terrain t : terrains) {
+			if(t != null){
+				this.terrains.add(t);
+			}
+		}
+		
+		for (Entity e: entities) {
+			if(e != null) {
+				processEntity(e);
+			}
+		}
+		
 		prepare();
 		
 		shader.start();
 		shader.loadSkyColour(R, G, B);
 		shader.loadLightPosition(sun);
 		shader.loadViewMatrix(camera);
-		renderer.render(entities);
+		renderer.render(this.entities);
 		shader.stop();
 		
 		terrainShader.start();
 		terrainShader.loadSkyColour(R, G, B);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
-		terrainRendrer.render(terrains);
+		terrainRendrer.render(this.terrains);
 		terrainShader.stop();
 		
-		//TODO reactivate
+		//TODO reactivate skybox once fixed
 		//skyboxRendrer.render(camera);
 		
 		terrains.clear();
 		entities.clear();
 	}
+	
 	
 	public void processTerrain(Terrain terrain) {
 		terrains.add(terrain);

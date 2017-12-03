@@ -39,6 +39,8 @@ public class MainGameLoop {
 		// Start
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		List<Terrain> terrains = new ArrayList<Terrain>();
+		List<Entity> entities = new ArrayList<Entity>();
 
 		
 		//Terrains
@@ -46,20 +48,14 @@ public class MainGameLoop {
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
 		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
-
-		
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-		int x = -1;
-		int z = -1;
-		Terrain terrain = new Terrain(x, z, SEED, loader , texturePack, blendMap, "heightmap");
-		
+		Terrain terrain = new Terrain(-1, -1, SEED, loader , texturePack, blendMap, "heightmap");
+		terrains.add(terrain);
 	
-
-		// Light and Camera entities
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
 		Camera camera = new Camera();
-
+		
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer(loader);
 
@@ -68,17 +64,8 @@ public class MainGameLoop {
 		while (!Display.isCloseRequested()) {
 			// updates the camera position once per frame
 			camera.move();
-
-			//Render Terrain
-			if (camera.getPosition().x < (x / 2) ) {
-
-			}
 			
-			
-	
-			renderer.processTerrain(terrain);
-			//Ligts and Camera
-			renderer.render(light, camera);
+			renderer.render(terrains, entities, light, camera);
 
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();

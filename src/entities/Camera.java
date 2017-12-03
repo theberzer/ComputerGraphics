@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Camera {
 
-	private Vector3f position = new Vector3f(2, 2, 100);
+	private Vector3f position = new Vector3f(-2000, 70, -2000);
 	private float pitch, yaw, roll;
 
 	public Camera() {
@@ -21,7 +21,6 @@ public class Camera {
 	}
 
 	public void move() {
-
 		// This code was found in a comment during a binge on youtube and helps
 		// with the camera movement
 		float arg_yaw = Mouse.getDX();
@@ -62,8 +61,13 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			position.y += 0.2f;
 		}
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			position.y -= 0.2f;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			System.exit(0);
 		}
 	}
 
