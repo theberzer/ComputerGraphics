@@ -147,11 +147,11 @@ public class MainGameLoop {
 		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
 		Camera camera = new Camera();
 		
-		
+		/*
 		//GUI TEST
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
 		List<GuiTexture> guis = new ArrayList<GuiTexture>();
-		 
+		 */
 		
 		
 		//water
@@ -167,12 +167,12 @@ public class MainGameLoop {
 		List<WaterTile> waterTileList = new ArrayList<>();
 		waterTileList.add(waterTile);
 		
-		
+		/*
 		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
 		guis.add(reflectionGui);
 		GuiTexture refractionGui = new GuiTexture(waterFrameBuffer.getRefractionTexture(),new Vector2f(0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
 		guis.add(refractionGui);
-		
+		*/
 		
 		// Main loop that will run until you press close
 		while (!Display.isCloseRequested()) {
@@ -248,8 +248,9 @@ public class MainGameLoop {
 			
 			renderer.render(light, camera, new Vector4f(0, 1, 0, 10000));
 			
+			
 			waterRenderer.render(waterTileList, camera);
-			guiRenderer.render(guis);
+			//guiRenderer.render(guis);
 			//Updates the display once per frame
 			DisplayManager.updateDisplay();
 			
@@ -262,7 +263,7 @@ public class MainGameLoop {
 		loader.cleanUp();
 		waterShader.cleanUp();
 		waterFrameBuffer.cleanUp();
-		guiRenderer.cleanUp();
+		//guiRenderer.cleanUp();
 		
 	
 		// Close
