@@ -11,6 +11,7 @@ out vec3 surfaceNormal;
 out vec3 toLightVector;
 out vec3 toCameraVector;
 
+
 uniform mat4 tranformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;

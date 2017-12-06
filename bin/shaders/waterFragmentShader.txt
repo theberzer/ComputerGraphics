@@ -1,12 +1,18 @@
 #version 400 core
 
 in vec4 clipSpace;
-
+in vec2 textureCoords;
+in vec3 toCameraVec;
 
 out vec4 out_Color;
 
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
+uniform sampler2D DuDvTexture;
+
+uniform float moveFactor; 
+
+const float distortionStrength = 0.02;
 
 void main(void) {
 	
@@ -15,8 +21,24 @@ void main(void) {
 	vec2 refractionUV = vec2(normalizedDC.x, normalizedDC.y);
 	vec2 reflectionUV = vec2(normalizedDC.x, -normalizedDC.y);
 	
+	vec2 distortion1 = (texture(DuDvTexture, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg * 2.0 - 1.0) * distortionStrength;
+	vec2 distortion2 = (texture(DuDvTexture, vec2(-textureCoords.x + moveFactor, textureCoords.y + moveFactor)).rg * 2.0 - 1.0) * distortionStrength;
+	
+	vec2 distortionFinal = distortion1 + distortion2;
+	
+	refractionUV += distortionFinal;
+	refractionUV = clamp(refractionUV, 0.001, 0.999);
+	
+	reflectionUV += distortionFinal;	
+	reflectionUV.x = clamp(reflectionUV.x, 0.001, 0.999);
+	reflectionUV.y = clamp(reflectionUV.y, -0.999, -0.001);
+	
 	vec4 refractionTexture = texture(refractionTexture, refractionUV);
 	vec4 reflectionTexture = texture(reflectionTexture, reflectionUV);
 	
-	out_Color = mix(reflectionTexture, refractionTexture, 0.5);
+	vec3 viewVector = normalize(toCameraVec);
+	float refractionFactor = dot(viewVector, vec3(0, 1.0, 0));
+	
+	out_Color = mix(reflectionTexture, refractionTexture, refractionFactor);
+	out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
 }

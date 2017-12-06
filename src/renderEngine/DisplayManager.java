@@ -48,5 +48,6 @@ public class DisplayManager {
 	public static int getHeight() {
 		return HEIGHT;
 	}
-
+	
+	
 }
