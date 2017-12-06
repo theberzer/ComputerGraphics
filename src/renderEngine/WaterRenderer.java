@@ -84,6 +84,9 @@ public class WaterRenderer {
 		
 		GL13.glActiveTexture(GL13.GL_TEXTURE3);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
+		
+		GL13.glActiveTexture(GL13.GL_TEXTURE4);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, wfb.getRefractionDepthBuffer());
 	}
 	
 	private void unbind(){

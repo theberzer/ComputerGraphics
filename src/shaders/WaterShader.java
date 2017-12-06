@@ -22,6 +22,7 @@ public class WaterShader extends ShaderProgram {
 	private int location_noralMap;
 	private int location_lightPosition;
 	private int location_lightColor; 
+	private int location_depthTexture;
 	
 	public WaterShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -45,6 +46,7 @@ public class WaterShader extends ShaderProgram {
 		location_noralMap = getUniformLocation("noralMap");
 		location_lightPosition = getUniformLocation("lightPosition");
 		location_lightColor = getUniformLocation("lightColor");
+		location_depthTexture = getUniformLocation("depthTexture");
 		
 	}
 	public void loadMoveFactor(float factor) {
@@ -61,6 +63,7 @@ public class WaterShader extends ShaderProgram {
 		super.loadInt(location_refractionTexture, 1);
 		super.loadInt(location_DuDvTexture, 2);
 		super.loadInt(location_noralMap, 3);
+		super.loadInt(location_depthTexture, 4);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
