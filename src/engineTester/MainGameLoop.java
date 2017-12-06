@@ -167,10 +167,12 @@ public class MainGameLoop {
 		List<WaterTile> waterTileList = new ArrayList<>();
 		waterTileList.add(waterTile);
 		
-		
+		/*
 		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
 		guis.add(reflectionGui);
-		
+		GuiTexture reflectionGui2 = new GuiTexture(waterFrameBuffer.getRefractionTexture(),new Vector2f(0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
+		guis.add(reflectionGui2);
+		*/
 		
 		
 		// Main loop that will run until you press close
@@ -235,7 +237,7 @@ public class MainGameLoop {
 			camera.invertPitch();
 			
 			renderer.render(light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
-			waterFrameBuffer.unbindFrameBuffer();
+			
 			
 			waterFrameBuffer.bindRefractionFrameBuffer();
 			renderer.render(light, camera, new Vector4f(0, -1, 0, waterTile.getHeight()));
