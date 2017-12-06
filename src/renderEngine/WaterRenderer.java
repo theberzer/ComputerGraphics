@@ -17,6 +17,7 @@ import toolbox.Maths;
 import water.WaterFrameBuffer;
 import water.WaterTile;
 import entities.Camera;
+import entities.Light;
 /**
  * @author Kim Nilsen Brusevold
  * 
@@ -26,6 +27,7 @@ import entities.Camera;
 public class WaterRenderer {
 	
 	private static final String DUDV_MAP = "DUDV_water";
+	private static final String NORMAL_MAP = "normalmap_water";
 	private static final float  WAVE_SPEED = 0.03f;
 	private RawModel quad;
 	private WaterShader shader;
@@ -33,11 +35,14 @@ public class WaterRenderer {
 	
 	private int DuDvTexture; 
 	private float moveFactor = 0; 
+	
+	private int normalMap;
 
 	public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffer wfb) {
 		this.shader = shader;
 		this.wfb = wfb;
 		DuDvTexture = loader.loadTexture(DUDV_MAP);
+		normalMap = loader.loadTexture(NORMAL_MAP);
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -45,8 +50,8 @@ public class WaterRenderer {
 		setUpVAO(loader);
 	}
 
-	public void render(List<WaterTile> watertiles, Camera camera) {
-		prepareRender(camera);	
+	public void render(List<WaterTile> watertiles, Camera camera, Light light) {
+		prepareRender(camera, light);	
 		for (WaterTile tile : watertiles) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
                     new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0,
@@ -57,13 +62,14 @@ public class WaterRenderer {
 		unbind();
 	}
 	
-	private void prepareRender(Camera camera){
+	private void prepareRender(Camera camera, Light light){
 		shader.start();
 		shader.loadViewMatrix(camera);
 		//This value 60 should be the fps the game is running at. 
 		moveFactor += WAVE_SPEED * 0.01;
 		moveFactor %= 1;
 		shader.loadMoveFactor(moveFactor);
+		shader.loadLight(light);
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		
@@ -75,6 +81,9 @@ public class WaterRenderer {
 		
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, DuDvTexture);
+		
+		GL13.glActiveTexture(GL13.GL_TEXTURE3);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
 	}
 	
 	private void unbind(){

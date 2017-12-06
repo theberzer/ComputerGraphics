@@ -3,16 +3,20 @@
 in vec4 clipSpace;
 in vec2 textureCoords;
 in vec3 toCameraVec;
-
+in vec3 fromLightVector;
 out vec4 out_Color;
 
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D DuDvTexture;
+uniform sampler2D noralMap;
+uniform vec3 lightColor;
 
 uniform float moveFactor; 
 
 const float distortionStrength = 0.02;
+const float shineDamper = 20.0;
+const float reflectivity = 0.6;
 
 void main(void) {
 	
@@ -21,10 +25,9 @@ void main(void) {
 	vec2 refractionUV = vec2(normalizedDC.x, normalizedDC.y);
 	vec2 reflectionUV = vec2(normalizedDC.x, -normalizedDC.y);
 	
-	vec2 distortion1 = (texture(DuDvTexture, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg * 2.0 - 1.0) * distortionStrength;
-	vec2 distortion2 = (texture(DuDvTexture, vec2(-textureCoords.x + moveFactor, textureCoords.y + moveFactor)).rg * 2.0 - 1.0) * distortionStrength;
-	
-	vec2 distortionFinal = distortion1 + distortion2;
+	vec2 distortedTexCoords = texture(DuDvTexture, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg*0.1;
+	distortedTexCoords = textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + moveFactor);
+	vec2 distortionFinal = (texture(DuDvTexture, distortedTexCoords).rg *2.0 - 1.0) * 0.02;
 	
 	refractionUV += distortionFinal;
 	refractionUV = clamp(refractionUV, 0.001, 0.999);
@@ -40,6 +43,16 @@ void main(void) {
 	float refractionFactor = dot(viewVector, vec3(0.0, 1.0, 0.0));
 	refractionFactor = pow(refractionFactor, 10);
 	
+	vec4 normalMapColor = texture(noralMap, distortedTexCoords);
+	vec3 normal = vec3(normalMapColor.r * 2.0 -1.0, normalMapColor.b, normalMapColor.g * 2.0 -1.0);
+	normal = normalize(normal);
+	
+	vec3 reflectedLight = reflect(normalize(fromLightVector), normal);
+	float specular = max(dot(reflectedLight, viewVector), 0.0);
+	specular = pow(specular, shineDamper); 
+	vec3 specularHighlights = lightColor * specular * reflectivity;
+	
 	out_Color = mix(reflectionTexture, refractionTexture, refractionFactor);
-	out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
+	out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.2) + vec4(specularHighlights, 0.0);
+	
 }

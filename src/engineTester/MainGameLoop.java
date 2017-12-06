@@ -250,7 +250,7 @@ public class MainGameLoop {
 			renderer.render(light, camera, new Vector4f(0, 1, 0, 10000));
 			
 			
-			waterRenderer.render(waterTileList, camera);
+			waterRenderer.render(waterTileList, camera, light);
 			guiRenderer.render(guis);
 			//Updates the display once per frame
 			DisplayManager.updateDisplay();
