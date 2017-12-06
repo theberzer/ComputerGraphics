@@ -227,7 +227,7 @@ public class MainGameLoop {
 			waterFrameBuffer.bindReflectionFrameBuffer();
 			
 			//Needs to move the camera to properly capture the "reflected" image
-			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight());
+			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight() + 1f);
 			camera.getPosition().y -= cameraDistance;
 			camera.invertPitch();
 			
@@ -251,6 +251,10 @@ public class MainGameLoop {
 			
 			waterRenderer.render(waterTileList, camera, light);
 			guiRenderer.render(guis);
+			
+			if(camera.getPosition().y < waterTile.getHeight())
+				System.out.println("UNDER WATER");
+			
 			//Updates the display once per frame
 			DisplayManager.updateDisplay();
 			

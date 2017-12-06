@@ -17,7 +17,7 @@ uniform float moveFactor;
 
 const float distortionStrength = 0.02;
 const float shineDamper = 20.0;
-const float reflectivity = 0.6;
+const float reflectivity = 0.3;
 
 void main(void) {
 	
@@ -40,7 +40,7 @@ void main(void) {
 	
 	vec2 distortedTexCoords = texture(DuDvTexture, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg*0.1;
 	distortedTexCoords = textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + moveFactor);
-	vec2 distortionFinal = (texture(DuDvTexture, distortedTexCoords).rg *2.0 - 1.0) * 0.02;
+	vec2 distortionFinal = (texture(DuDvTexture, distortedTexCoords).rg *2.0 - 1.0) * 0.02 * clamp(waterDepth/15.0, 0.0, 1.0 );
 	
 	refractionUV += distortionFinal;
 	refractionUV = clamp(refractionUV, 0.001, 0.999);
@@ -52,21 +52,22 @@ void main(void) {
 	vec4 refractionTexture = texture(refractionTexture, refractionUV);
 	vec4 reflectionTexture = texture(reflectionTexture, reflectionUV);
 	
-	vec3 viewVector = normalize(toCameraVec);
-	float refractionFactor = dot(viewVector, vec3(0.0, 1.0, 0.0));
-	refractionFactor = pow(refractionFactor, 10);
-	
 	vec4 normalMapColor = texture(noralMap, distortedTexCoords);
-	vec3 normal = vec3(normalMapColor.r * 2.0 -1.0, normalMapColor.b, normalMapColor.g * 2.0 -1.0);
+	vec3 normal = vec3(normalMapColor.r * 2.0 -1.0, normalMapColor.b * 2.0, normalMapColor.g * 2.0 -1.0);
 	normal = normalize(normal);
+	
+	vec3 viewVector = normalize(toCameraVec);
+	float refractionFactor = dot(viewVector, normal);
+	refractionFactor = pow(refractionFactor, 10);
+	refractionFactor = clamp(refractionFactor, 0.0, 1.0);
 	
 	vec3 reflectedLight = reflect(normalize(fromLightVector), normal);
 	float specular = max(dot(reflectedLight, viewVector), 0.0);
 	specular = pow(specular, shineDamper); 
-	vec3 specularHighlights = lightColor * specular * reflectivity;
+	vec3 specularHighlights = lightColor * specular * reflectivity * clamp(waterDepth/5.0, 0.0, 1.0 );
 	
 	out_Color = mix(reflectionTexture, refractionTexture, refractionFactor);
 	out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.2) + vec4(specularHighlights, 0.0);
 	
-	out_Color = vec4(waterDepth / 50);
+	out_Color.a = clamp(waterDepth/5.0, 0.0, 1.0 );
 }
