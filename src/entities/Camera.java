@@ -51,7 +51,6 @@ public class Camera {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
 			
-			System.out.println(position.x);
 		}
 		// Backwards
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
