@@ -1,5 +1,6 @@
 package terrains;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -13,8 +14,10 @@ import toolbox.Maths;
 
 public class Terrain {
 
-	private static float SIZE = 4000;
 	private static final int VERTEX_COUNT = 256;
+	
+	private static float SIZE = 4000;
+	private static ArrayList<Terrain> terrains = new ArrayList<>();
 	
 	
 	private RawModel model;
@@ -23,8 +26,8 @@ public class Terrain {
 	private HeightGenerator generator;
 	private float x;
 	private float z;
-	private int seed;
 	private float[][] heights;
+	private int seed;
 	
 	
 	public Terrain(int gridX, int gridZ, int seed, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap) {
@@ -36,6 +39,7 @@ public class Terrain {
 	
 		generator = new HeightGenerator(gridX, gridZ, VERTEX_COUNT, seed);
 		this.model = generateTerrain(loader);
+		terrains.add(this);
 	}
 
 	private RawModel generateTerrain(Loader loader) {
@@ -55,7 +59,7 @@ public class Terrain {
 
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				float height = getHeight(i, j, generateor);
+				float height = setHeight(i, j, generateor);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
 				vertices[vertexPointer * 3 + 1] = height;
@@ -89,21 +93,21 @@ public class Terrain {
 	}
 
 	private Vector3f calculateNormal(int x, int z, HeightGenerator generateor) {
-		float heightL = getHeight(x - 1, z, generateor);
-		float heightR = getHeight(x + 1, z, generateor);
-		float heightD = getHeight(x, z - 1, generateor);
-		float heightU = getHeight(x, z + 1, generateor);
+		float heightL = setHeight(x - 1, z, generateor);
+		float heightR = setHeight(x + 1, z, generateor);
+		float heightD = setHeight(x, z - 1, generateor);
+		float heightU = setHeight(x, z + 1, generateor);
 
 		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
 		normal.normalise();
 		return normal;
 	}
 
-	private float getHeight(int x, int z, HeightGenerator generateor) {
+	private float setHeight(int x, int z, HeightGenerator generateor) {
 		return generateor.generateHeight(x, z);
 	}
 	
-	private float getHeight(float worldX, float worldZ) {
+	public  float getHeight(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
 		float gridSquareSize = SIZE / ((float) heights.length - 1);
@@ -175,4 +179,9 @@ public class Terrain {
 		SIZE = sIZE;
 	}
 
+	public static ArrayList<Terrain> getTerrains() {
+		return terrains;
+	}
+
+	
 }

@@ -1,5 +1,6 @@
 package terrains;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HeightGenerator {
@@ -8,6 +9,7 @@ public class HeightGenerator {
 	private static final int OCTAVES = 3;
 	private static final float ROUGHNESS = 0.3f;
 	
+	private static ArrayList<HeightGenerator> hgs = new ArrayList<>();
 	private Random random = new Random();
 	private int seed;
 	private int xOffset = 0;
@@ -22,6 +24,7 @@ public class HeightGenerator {
         this.seed = seed;
         xOffset = gridX * (vertexCount - 1);
         zOffset = gridZ * (vertexCount - 1);
+        hgs.add(this);
     }
 	
 	
@@ -79,5 +82,12 @@ public class HeightGenerator {
 		return r;
 		
 	}
+
+
+	public static ArrayList<HeightGenerator> getHgs() {
+		return hgs;
+	}
+	
+	
 	
 }

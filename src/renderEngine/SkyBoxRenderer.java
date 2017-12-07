@@ -86,7 +86,6 @@ public class SkyBoxRenderer {
 		float noon = 10000;
 		float night = 19000;
 		float end = 24000;
-		float timeNumber = 100000 * (time / 24000);
 		Vector3f lightIntennsity = new Vector3f(blend, blend, blend);
 		
 		
