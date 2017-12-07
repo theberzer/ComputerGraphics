@@ -8,8 +8,8 @@ uniform samplerCube cubeMap1;
 uniform float blend;
 uniform vec3 fogColor;
 
-const float lowerLimit = 00.0;
-const float upperLimit = 70.0;
+const float lowerLimit = -90.0;
+const float upperLimit = 90.0;
 
 void main(void){
 	vec4 tex = texture(cubeMap, textureCoords);

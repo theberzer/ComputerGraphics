@@ -18,6 +18,7 @@ public class Terrain {
 	
 	private static float SIZE = 4000;
 	private static ArrayList<Terrain> terrains = new ArrayList<>();
+	private static ArrayList<HeightGenerator> hg = new ArrayList<>();
 	
 	
 	private RawModel model;
@@ -37,16 +38,21 @@ public class Terrain {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 	
-		generator = new HeightGenerator(gridX, gridZ, VERTEX_COUNT, seed);
-		this.model = generateTerrain(loader);
+		
+		try {
+			generator = hg.get(0);
+		} catch (IndexOutOfBoundsException e) {
+			generator = new HeightGenerator(100000, 100000, VERTEX_COUNT, seed);
+			hg.add(generator);
+		}
+		
+		this.model = generateTerrain(loader, generator);
 		terrains.add(this);
 	}
 
-	private RawModel generateTerrain(Loader loader) {
+	private RawModel generateTerrain(Loader loader, HeightGenerator generator) {
 
-		HeightGenerator generateor = new HeightGenerator();
-
-		int VERTEX_COUNT = 128;
+		int VERTEX_COUNT = 256;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 
 		int count = VERTEX_COUNT * VERTEX_COUNT;
@@ -59,13 +65,13 @@ public class Terrain {
 
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				float height = setHeight(i, j, generateor);
+				float height = setHeight(i, j, generator);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
 				vertices[vertexPointer * 3 + 1] = height;
 				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
 				
-				Vector3f normal = calculateNormal(j, i, generateor);
+				Vector3f normal = calculateNormal(j, i, generator);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;
 				normals[vertexPointer * 3 + 2] = normal.z;
@@ -136,7 +142,19 @@ public class Terrain {
 		
 		return height;
 	}
+	
+	public static Terrain getTerrain() {
+		Terrain terrain;
+		for (Terrain t: terrains) {
+			terrain = t;
+			return terrain;
+		}
+		return null;
+	}
 
+	public static void increaseMapSize(float increment) {
+		SIZE += increment;
+	}
 	
 	
 	public float getX() {
@@ -182,6 +200,7 @@ public class Terrain {
 	public static ArrayList<Terrain> getTerrains() {
 		return terrains;
 	}
+	
 
 	
 }

@@ -17,7 +17,7 @@ import terrains.Terrain;
  */
 public class Camera {
 
-	private static Vector3f cameraPosition = new Vector3f(-2000, 70, -2000);
+	private static Vector3f cameraPosition = new Vector3f(0, 70, 0);
 	
 	private Vector3f position;
 	private float pitch, yaw, roll;
@@ -73,11 +73,11 @@ public class Camera {
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			position.y += 0.2f;
+			position.y += 2f;
 		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			position.y -= 0.2f;
+			position.y -= 2f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
