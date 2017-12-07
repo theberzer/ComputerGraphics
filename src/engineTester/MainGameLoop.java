@@ -51,6 +51,7 @@ public class MainGameLoop {
 		// Start
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		
 		List<Terrain> terrains = new ArrayList<Terrain>();
 		List<Entity> entities = new ArrayList<Entity>();
 		
@@ -89,8 +90,8 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(0,0,0);
-		
+		WaterTile waterTile = new WaterTile(0,50,0);
+		camera.setPosition(new Vector3f(0,50, 0));
 		
 		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
 		guis.add(reflectionGui);
@@ -104,7 +105,7 @@ public class MainGameLoop {
 		while (!Display.isCloseRequested()) {
 			// updates the camera position once per frame
 			camera.move();
-			
+			System.out.println(camera.getPosition());
 			for (Terrain t : terrains) {
 				if(t != null){
 					renderer.processTerrain(t);
@@ -122,14 +123,17 @@ public class MainGameLoop {
 			waterFrameBuffer.bindReflectionFrameBuffer();
 			
 			//Move the camera to properly capture the "reflected" image
-			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight() + 1f);
+			float cameraDistance = 2 * (Camera.getCameraPosition().y - waterTile.getHeight() + 1f);
 			camera.getPosition().y -= cameraDistance;
+		
 			camera.invertPitch();
+		
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
 			
 			//Moves the camera back to the original position
 			camera.getPosition().y += cameraDistance;
 			camera.invertPitch();
+			
 			
 			
 			waterFrameBuffer.bindRefractionFrameBuffer();
