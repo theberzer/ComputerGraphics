@@ -89,7 +89,7 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(0 ,0, 1);
+		WaterTile waterTile = new WaterTile(camera.getCameraPosition().x,camera.getCameraPosition().y, camera.getCameraPosition().z);
 		
 		
 		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
@@ -116,8 +116,6 @@ public class MainGameLoop {
 					renderer.processEntity(e);
 				}
 			}
-			
-			System.out.println(camera.getPosition());
 			
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			waterFrameBuffer.bindReflectionFrameBuffer();
