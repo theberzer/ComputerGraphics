@@ -37,7 +37,7 @@ void main(void) {
 	
 	vec2 distortedTextureCoords = texture(DuDvTexture, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg*0.1;
 	distortedTextureCoords = textureCoords + vec2(distortedTextureCoords.x, distortedTextureCoords.y + moveFactor);
-	vec2 distortionTextureFinal = (texture(DuDvTexture, distortedTextureCoords).rg *2.0 - 1.0) * distortionStrength * clamp(waterDepth/20.0, 0.0, 1.0);;
+	vec2 distortionTextureFinal = (texture(DuDvTexture, distortedTextureCoords).rg *2.0 - 1.0) * distortionStrength * clamp(waterDepth/10.0, 0.0, 1.0);;
 	
 	refractionTexCoords += distortionTextureFinal;
 	//To prevent wobbly lines
@@ -68,5 +68,5 @@ void main(void) {
 	
 	out_Color = mix(reflectionColor, refractionColor, refractionFactor);
 	out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.15) + vec4(specularHighlights, 0.0);
-	out_Color.a = clamp(waterDepth/20.0, 0.0, 1.0);
+	out_Color.a = clamp(waterDepth/5.0, 0.0, 1.0);
 }
