@@ -9,6 +9,7 @@ import java.util.Map;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,11 +59,12 @@ public class MastrerRendrer {
 	}
 
 	
-	public void render(List<Terrain> terrains, List<Entity> entities, Light sun, Camera camera) {
+	public void render(List<Terrain> terrains, List<Entity> entities, Light sun, Camera camera, Vector4f clipPlane) {
 		
 		prepare();
 		
 		shader.start();
+		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(red, green, blue);
 		shader.loadLightPosition(sun);
 		shader.loadViewMatrix(camera);
@@ -141,5 +143,7 @@ public class MastrerRendrer {
 		MastrerRendrer.blue = blue;
 	}
 	
-	
+	public Matrix4f getProjectionMatrix() {
+		return projectionMatrix;
+	}
 }

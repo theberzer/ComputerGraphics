@@ -16,6 +16,8 @@ uniform mat4 tranformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
+//This is used to define the height of where the engine stops rendering reflections
+uniform vec4 plane;
 
 const float density = 0.007;
 const float gradient = 1.5;
@@ -34,4 +36,6 @@ void main(){
 	float distance = length(positionRelativeToCam.xyz);
 	visibility = exp(-pow((distance * density), gradient));
 	visibility = clamp(visibility, 0.0, 1.0);
+	
+	gl_ClipDistance[0] = dot(worldPosition, plane) ;
 }

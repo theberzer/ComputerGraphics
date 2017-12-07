@@ -95,6 +95,10 @@ public class Camera {
 	public static void setCameraPosition(Vector3f cameraPosition) {
 		Camera.cameraPosition = cameraPosition;
 	}
+
+	public void invertPitch() {
+		pitch = -pitch;
+	}
 	
 
 }

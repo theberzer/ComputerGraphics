@@ -53,8 +53,19 @@ public class DisplayManager {
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
-
+	
+	
 	private static long getCurrentTime() {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
+
+	public static int getWidth() {
+		
+		return WIDTH;
+	}
+
+	public static int getHeight() {
+		return HEIGHT;
+	}
+	
 }
