@@ -17,21 +17,20 @@ import terrains.Terrain;
  */
 public class Camera {
 
-	private static Vector3f cameraPosition = new Vector3f(0, 70, 0);
-	
+	private static Vector3f cameraPosition = new Vector3f(-4000, 70, -4000);
+
 	private Vector3f position;
 	private float pitch, yaw, roll;
-	
-
+	private Terrain t;
+	private int counter = 0;
 
 	public Camera() {
-		ArrayList<Terrain> terrains = Terrain.getTerrains();
-		for (Terrain t : terrains) {
-			cameraPosition.x = cameraPosition.x;
-			cameraPosition.y = t.getHeight(cameraPosition.x, cameraPosition.z) + 20;
-			cameraPosition.z = cameraPosition.z;
-			position = cameraPosition;
-		}
+		t = Terrain.getTerrain();
+		cameraPosition.x = cameraPosition.x;
+		cameraPosition.y = t.getHeight(cameraPosition.x, cameraPosition.z) + 50;
+		cameraPosition.z = cameraPosition.z;
+		position = cameraPosition;
+
 	}
 
 	public void move() {
@@ -48,7 +47,9 @@ public class Camera {
 			float toX = ((float) Math.cos(Math.toRadians(yaw + 90)));
 			position.x -= toX;
 			position.z -= toZ;
-
+			if (counter == 0) {
+				position.y = t.getHeight(position.x, position.z) + 50;
+			}
 		}
 		// Backwards
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -56,6 +57,9 @@ public class Camera {
 			float toX = ((float) Math.cos(Math.toRadians(yaw + 90)));
 			position.x += toX;
 			position.z += toZ;
+			if (counter == 0) {
+				position.y = t.getHeight(position.x, position.z) + 50;
+			}
 		}
 		// Right
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
@@ -63,6 +67,9 @@ public class Camera {
 			float toX = ((float) Math.cos(Math.toRadians(yaw)));
 			position.x += toX;
 			position.z += toZ;
+			if (counter == 0) {
+				position.y = t.getHeight(position.x, position.z) + 50;
+			}
 		}
 		// Left
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
@@ -70,17 +77,27 @@ public class Camera {
 			float toX = ((float) Math.cos(Math.toRadians(yaw)));
 			position.x -= toX;
 			position.z -= toZ;
+			if (counter == 0) {
+				position.y = t.getHeight(position.x, position.z) + 50;
+			}
+		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_CAPITAL)) {
+			if (counter == 0)
+				counter++;
+			else
+				counter--;
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			position.y += 2f;
 		}
-		
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			position.y -= 2f;
 		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			System.exit(0);
 		}
 	}
@@ -108,14 +125,13 @@ public class Camera {
 	public static void setCameraPosition(Vector3f cameraPosition) {
 		Camera.cameraPosition = cameraPosition;
 	}
-	
+
 	public void setPosition(Vector3f cameraPosition) {
 		position = cameraPosition;
 	}
-	
+
 	public void invertPitch() {
 		pitch = -pitch;
 	}
-	
 
 }

@@ -79,7 +79,7 @@ public class MastrerRendrer {
 		terrainRendrer.render(this.terrains);
 		terrainShader.stop();
 		
-		skyboxRendrer.render(camera, red, green, blue);
+		//skyboxRendrer.render(camera, red, green, blue);
 	}
 	
 	
@@ -109,14 +109,14 @@ public class MastrerRendrer {
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
 		float x_scale = y_scale / aspectRatio;
-		float frustum_length = FAR_PLANE - NEAR_PLANE;
+		float length = FAR_PLANE - NEAR_PLANE;
 
 		projectionMatrix = new Matrix4f();
 		projectionMatrix.m00 = x_scale;
 		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / length);
 		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / length);
 		projectionMatrix.m33 = 0;
 	}
 
