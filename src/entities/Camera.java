@@ -17,7 +17,7 @@ import terrains.Terrain;
  */
 public class Camera {
 
-	private static Vector3f cameraPosition = new Vector3f(-4000, 70, -4000);
+	private static Vector3f cameraPosition = new Vector3f(-2000, 70, -2000);
 
 	private Vector3f position;
 	private float pitch, yaw, roll;
@@ -50,6 +50,8 @@ public class Camera {
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
+			
+			System.out.println(position.x);
 		}
 		// Backwards
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -100,6 +102,8 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			System.exit(0);
 		}
+		
+	cameraPosition = position;
 	}
 
 	public Vector3f getPosition() {

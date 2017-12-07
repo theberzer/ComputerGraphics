@@ -11,10 +11,11 @@ import entities.Camera;
 import entities.Light;
 import models.RawModel;
 import shaders.SkyboxShader;
+import toolbox.Colors;
 
 public class SkyBoxRenderer {
 
-	private static final float SIZE = 1200f;
+	private static final float SIZE = 3000f;
 	private static final float[] VERTICES = { -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE,
 			-SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE,
 
@@ -46,6 +47,9 @@ public class SkyBoxRenderer {
 	private float y = -100;
 	private float z = 1000;
 	private float intensity = 0.1f;
+	private Vector3f dayColor = Colors.convertToFloat(new Vector3f(93, 94, 96));
+	private Vector3f nightColor = Colors.convertToFloat(new Vector3f(149, 152, 155));
+
 	
 	public SkyBoxRenderer(Loader loader, Matrix4f projectionMatrix) {
 		cube = loader.loadToVAO(VERTICES, 3);
@@ -58,10 +62,10 @@ public class SkyBoxRenderer {
 		shader.stop();
 	}
 
-	public void render(Camera camera, float red, float green, float blue) {
+	public void render(Camera camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
-		shader.loadFogColor(red, green, blue);
+		shader.loadFogColor(dayColor.x, dayColor.y, dayColor.z);
 
 		GL30.glBindVertexArray(cube.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -113,7 +117,7 @@ public class SkyBoxRenderer {
 			blend = (time - noon) / (night - noon);
 			x -= 0.111;
 			y -= 0.111; 
-			z += 0.111;
+			z += 0.111; 
 			intensity -= 0.000555556f;
 		} else {
 			cube = textureID;

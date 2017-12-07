@@ -6,7 +6,7 @@ import java.util.Random;
 public class HeightGenerator {
 
 	private static final float AMPLITUDE = 200f;
-	private static final int NOISE = 4;
+	private static final int NOISE = 5;
 	private static final float ROUGHNESS = 0.3f;
 	
 	private static ArrayList<HeightGenerator> hgs = new ArrayList<>();

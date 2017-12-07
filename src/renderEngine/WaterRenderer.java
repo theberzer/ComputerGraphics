@@ -58,7 +58,6 @@ public class WaterRenderer {
                     WaterTile.TILE_SIZE);
 			shader.loadModelMatrix(modelMatrix);
 			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quad.getVertexCount());
-			System.out.println("Water rendered");
 		}
 		unbind();
 	}

@@ -3,12 +3,14 @@ package renderEngine;
 import shaders.StaticShader;
 import shaders.TerrainShader;
 import terrains.Terrain;
+import toolbox.Colors;
 
 import java.util.Map;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.util.ArrayList;
@@ -31,11 +33,10 @@ import models.TexturedModel;
 public class MastrerRendrer {
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.01f;
-	private static final float FAR_PLANE = 4000;
-	private static float red = 0.58431372f;
-	private static float green = 0.59607843f;
-	private static float blue = 0.60784313f;
-	
+	private static final float FAR_PLANE = 6000;
+
+	private static Vector3f color = Colors.convertToFloat(new Vector3f(149, 152, 155));
+
 	private Matrix4f projectionMatrix;
 
 	
@@ -65,14 +66,14 @@ public class MastrerRendrer {
 		skyboxRendrer.render(camera, red, green, blue);
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(red, green, blue);
+		shader.loadSkyColour(color.x, color.y, color.z);
 		shader.loadLightPosition(sun);
 		shader.loadViewMatrix(camera);
 		renderer.render(this.entities);
 		shader.stop();
 		
 		terrainShader.start();
-		terrainShader.loadSkyColour(red, green, blue);
+		terrainShader.loadSkyColour(color.x, color.y, color.z);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
 		terrainShader.loadPlane(clipPlane);
@@ -102,7 +103,7 @@ public class MastrerRendrer {
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(red, green, blue, 1);
+		GL11.glClearColor(color.x, color.y, color.z, 1);
 	}
  
 	private void createProjectionMatrix() {
@@ -130,20 +131,6 @@ public class MastrerRendrer {
 		terrains.clear();
 	}
 
-	public static void setRed(float red) {
-		MastrerRendrer.red = red;
-	}
-
-
-	public static void setGreen(float green) {
-		MastrerRendrer.green = green;
-	}
-
-
-	public static void setBlue(float blue) {
-		MastrerRendrer.blue = blue;
-	}
-	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}

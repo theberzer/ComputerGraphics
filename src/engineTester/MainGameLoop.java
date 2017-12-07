@@ -66,13 +66,10 @@ public class MainGameLoop {
 		Terrain terrain = new Terrain(0, 0, SEED, loader , texturePack, blendMap);
 		terrains.add(terrain);
 		
-
-	
-
-		
 		Light light = new Light();
 		Camera camera = new Camera();
-		
+		camera.setPosition(new Vector3f(2000,50, 2000));
+
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer(loader);
 		
@@ -92,8 +89,12 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
+<<<<<<< Updated upstream
 		WaterTile waterTile = new WaterTile(570,300,-50 );
 		camera.setPosition(new Vector3f(300,0, 570));
+=======
+		WaterTile waterTile = new WaterTile(0,50,0);
+>>>>>>> Stashed changes
 		
 		
 		List<WaterTile> waterTileList = new ArrayList<>();
@@ -103,7 +104,6 @@ public class MainGameLoop {
 		while (!Display.isCloseRequested()) {
 			// updates the camera position once per frame
 			camera.move();
-			System.out.println(camera.getPosition());
 			for (Terrain t : terrains) {
 				if(t != null){
 					renderer.processTerrain(t);
@@ -144,7 +144,7 @@ public class MainGameLoop {
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, 100));
 				
 			waterRenderer.render(waterTileList, camera, light);
-			guiRenderer.render(guis);
+			//guiRenderer.render(guis);
 			
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
