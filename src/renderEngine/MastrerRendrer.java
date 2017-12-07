@@ -59,17 +59,6 @@ public class MastrerRendrer {
 
 	
 	public void render(List<Terrain> terrains, List<Entity> entities, Light sun, Camera camera) {
-		for (Terrain t : terrains) {
-			if(t != null){
-				this.terrains.add(t);
-			}
-		}
-		
-		for (Entity e: entities) {
-			if(e != null) {
-				processEntity(e);
-			}
-		}
 		
 		prepare();
 		
@@ -87,11 +76,7 @@ public class MastrerRendrer {
 		terrainRendrer.render(this.terrains);
 		terrainShader.stop();
 		
-		//TODO reactivate skybox once fixed
 		skyboxRendrer.render(camera, red, green, blue);
-		
-		terrains.clear();
-		entities.clear();
 	}
 	
 	
@@ -137,6 +122,10 @@ public class MastrerRendrer {
 		terrainShader.cleanUP();
 	}
 
+	public void cleanLists() {
+		entities.clear();
+		terrains.clear();
+	}
 
 	public static void setRed(float red) {
 		MastrerRendrer.red = red;

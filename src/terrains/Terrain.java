@@ -13,7 +13,7 @@ import toolbox.Maths;
 
 public class Terrain {
 
-	private static final float SIZE = 4000;
+	private static float SIZE = 4000;
 	private static final int VERTEX_COUNT = 256;
 	
 	
@@ -27,19 +27,18 @@ public class Terrain {
 	private float[][] heights;
 	
 	
-	public Terrain(int gridX, int gridZ, int seed, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap,
-			String heightMap) {
+	public Terrain(int gridX, int gridZ, int seed, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap) {
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
 		this.seed = seed;
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		
+	
 		generator = new HeightGenerator(gridX, gridZ, VERTEX_COUNT, seed);
-		this.model = generateTerrain(loader, heightMap);
+		this.model = generateTerrain(loader);
 	}
 
-	private RawModel generateTerrain(Loader loader, String heightMap) {
+	private RawModel generateTerrain(Loader loader) {
 
 		HeightGenerator generateor = new HeightGenerator();
 
@@ -134,6 +133,8 @@ public class Terrain {
 		return height;
 	}
 
+	
+	
 	public float getX() {
 		return x;
 	}
@@ -164,6 +165,14 @@ public class Terrain {
 
 	public TerrainTexture getBlendMap() {
 		return blendMap;
+	}
+
+	public static float getSIZE() {
+		return SIZE;
+	}
+
+	public static void setSIZE(float sIZE) {
+		SIZE = sIZE;
 	}
 
 }

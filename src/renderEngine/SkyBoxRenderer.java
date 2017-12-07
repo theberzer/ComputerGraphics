@@ -86,7 +86,6 @@ public class SkyBoxRenderer {
 		float noon = 10000;
 		float night = 19000;
 		float end = 24000;
-		Vector3f lightPosition = new Vector3f(x, y, z);
 		float timeNumber = 100000 * (time / 24000);
 		Vector3f lightIntennsity = new Vector3f(blend, blend, blend);
 		
@@ -126,17 +125,15 @@ public class SkyBoxRenderer {
 			z += 0.2;
 			intensity -= 0.00008f;
 		}
+			
 		
-		System.out.println(intensity);
-	
-		lightPosition.set(x, y, z);
 		if (intensity > 1) {
 			intensity = 1;
 		}
 		
 		lightIntennsity.set(intensity, intensity, intensity);
 		Light.setIntensity(lightIntennsity);
-		Light.setPosition(lightPosition);
+		Light.setPosition(x, y, z);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, cube);
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);

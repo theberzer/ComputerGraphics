@@ -1,7 +1,9 @@
 package engineTester;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import models.RawModel;
@@ -41,7 +43,7 @@ public class MainGameLoop {
 		Loader loader = new Loader();
 		List<Terrain> terrains = new ArrayList<Terrain>();
 		List<Entity> entities = new ArrayList<Entity>();
-
+		
 		
 		//Terrains
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
@@ -50,9 +52,13 @@ public class MainGameLoop {
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-		Terrain terrain = new Terrain(-1, -1, SEED, loader , texturePack, blendMap, "heightmap");
+		Terrain terrain = new Terrain(0, 0, SEED, loader , texturePack, blendMap);
 		terrains.add(terrain);
 	
+		Terrain terrain1 = new Terrain(-1,0, SEED, loader , texturePack, blendMap);
+		terrains.add(terrain1);
+
+		
 		Light light = new Light();
 		Camera camera = new Camera();
 		
@@ -65,10 +71,26 @@ public class MainGameLoop {
 			// updates the camera position once per frame
 			camera.move();
 			
+			for (Terrain t : terrains) {
+				if(t != null){
+					renderer.processTerrain(t);
+				}
+			}
+			
+			for (Entity e: entities) {
+				if(e != null) {
+					renderer.processEntity(e);
+				}
+			}
+			
+			
 			renderer.render(terrains, entities, light, camera);
 
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
+			
+			renderer.cleanLists();
+			
 		}
 
 		// Clean up - deletes instances of the object so that it does not clog
