@@ -53,7 +53,7 @@ public class MainGameLoop {
 		Terrain terrain = new Terrain(-1, -1, SEED, loader , texturePack, blendMap, "heightmap");
 		terrains.add(terrain);
 	
-		Light light = new Light(new Vector3f(1000, 1000, 1000), new Vector3f(1, 1, 1));
+		Light light = new Light();
 		Camera camera = new Camera();
 		
 		// Create a new instance of the MasterRendrer object

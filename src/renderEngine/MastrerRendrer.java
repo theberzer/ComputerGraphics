@@ -28,12 +28,12 @@ import models.TexturedModel;
  *
  */
 public class MastrerRendrer {
-	private static final float FOV = 100;
+	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.01f;
 	private static final float FAR_PLANE = 4000;
-	private static final float R = 0.87843f;
-	private static final float G = 0.97647f;
-	private static final float B = 0.97647f;
+	private static float red = 0.58431372f;
+	private static float green = 0.59607843f;
+	private static float blue = 0.60784313f;
 	
 	private Matrix4f projectionMatrix;
 
@@ -74,21 +74,21 @@ public class MastrerRendrer {
 		prepare();
 		
 		shader.start();
-		shader.loadSkyColour(R, G, B);
+		shader.loadSkyColour(red, green, blue);
 		shader.loadLightPosition(sun);
 		shader.loadViewMatrix(camera);
 		renderer.render(this.entities);
 		shader.stop();
 		
 		terrainShader.start();
-		terrainShader.loadSkyColour(R, G, B);
+		terrainShader.loadSkyColour(red, green, blue);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
 		terrainRendrer.render(this.terrains);
 		terrainShader.stop();
 		
 		//TODO reactivate skybox once fixed
-		//skyboxRendrer.render(camera);
+		skyboxRendrer.render(camera, red, green, blue);
 		
 		terrains.clear();
 		entities.clear();
@@ -114,7 +114,7 @@ public class MastrerRendrer {
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(R, G, B, 1);
+		GL11.glClearColor(red, green, blue, 1);
 	}
 
 	private void createProjectionMatrix() {
@@ -136,4 +136,21 @@ public class MastrerRendrer {
 		shader.cleanUP();
 		terrainShader.cleanUP();
 	}
+
+
+	public static void setRed(float red) {
+		MastrerRendrer.red = red;
+	}
+
+
+	public static void setGreen(float green) {
+		MastrerRendrer.green = green;
+	}
+
+
+	public static void setBlue(float blue) {
+		MastrerRendrer.blue = blue;
+	}
+	
+	
 }

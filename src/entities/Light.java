@@ -9,20 +9,44 @@ import org.lwjgl.util.vector.Vector3f;
  *         And God said let there be light
  */
 public class Light {
-	private Vector3f postion;
-	private Vector3f colour;
+	private static Vector3f position = new Vector3f(1000, 1000, 1000);
+	private static Vector3f intensity = new Vector3f(0.1f, 0.1f, 0.1f);
 
-	public Light(Vector3f postion, Vector3f colour) {
+	public Light() {
 		super();
-		this.postion = postion;
-		this.colour = colour;
 	}
 
 	public Vector3f getPostion() {
-		return postion;
+		return position;
+	}
+	
+
+	
+	public static Vector3f getIntensity() {
+		return intensity;
 	}
 
-	public Vector3f getColour() {
-		return colour;
+	public static void setIntensity(Vector3f intensity) {
+		Light.intensity = intensity;
 	}
+
+	public static void setxPosition(float postion) {
+		position.x = postion;
+	}
+	
+	public static void setyPosition(float postion) {
+		position.y = postion;
+	}
+	
+	public static void setzPosition(float postion) {
+		position.z = postion;
+	}
+
+	public static void setPosition(Vector3f position) {
+		Light.position = position;
+	}
+	
+	
+	
+	
 }

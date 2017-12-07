@@ -75,7 +75,7 @@ public class StaticShader extends ShaderProgram {
 	
 	public void loadLightPosition(Light light){
 		super.loadVector(location_lightPosition, light.getPostion());
-		super.loadVector(location_lightColour, light.getColour());
+		super.loadVector(location_lightColour, light.getIntensity());
 	}
 
 }
