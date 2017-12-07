@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 import toolbox.Maths;
 import entities.Camera;
 import entities.Light;
+import renderEngine.MastrerRendrer;
 
 public class WaterShader extends ShaderProgram {
 
@@ -24,6 +25,8 @@ public class WaterShader extends ShaderProgram {
 	private int location_lightPosition;
 	private int location_lightColor; 
 	private int location_depthTexture;
+	private int location_planeNear;
+	private int location_planeFar;
 	
 	public WaterShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -48,6 +51,8 @@ public class WaterShader extends ShaderProgram {
 		location_lightPosition = getUniformLocation("lightPosition");
 		location_lightColor = getUniformLocation("lightColor");
 		location_depthTexture = getUniformLocation("depthTexture");
+		location_planeNear = getUniformLocation("planeNear");
+		location_planeFar = getUniformLocation("planeFar");
 		
 	}
 	public void loadMoveFactor(float factor) {
@@ -79,6 +84,11 @@ public class WaterShader extends ShaderProgram {
 
 	public void loadModelMatrix(Matrix4f modelMatrix){
 		loadMatrix(location_modelMatrix, modelMatrix);
+	}
+	
+	public void loadProjectionPlanes() {
+		super.loadFloat(location_planeNear, MastrerRendrer.getNearPlane());
+		super.loadFloat(location_planeFar, MastrerRendrer.getFarPlane());
 	}
 
 }

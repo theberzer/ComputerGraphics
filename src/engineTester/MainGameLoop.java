@@ -45,7 +45,7 @@ public class MainGameLoop {
 	/**
 	 * @param args
 	 */
-	private static final int SEED = new Random().nextInt(1000000000);
+	private static final int SEED = 5000000;
 	
 	public static void main(String[] args) {
 		// Start
@@ -92,13 +92,9 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(0,50,0);
-		camera.setPosition(new Vector3f(0,50, 0));
+		WaterTile waterTile = new WaterTile(570,300,-50 );
+		camera.setPosition(new Vector3f(300,0, 570));
 		
-		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
-		guis.add(reflectionGui);
-		GuiTexture reflectionGui2 = new GuiTexture(waterFrameBuffer.getRefractionTexture(),new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
-		guis.add(reflectionGui2);
 		
 		List<WaterTile> waterTileList = new ArrayList<>();
 		waterTileList.add(waterTile);
@@ -123,17 +119,16 @@ public class MainGameLoop {
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			
 			waterFrameBuffer.bindReflectionFrameBuffer();
-			
 			//Move the camera to properly capture the "reflected" image
-			float cameraDistance = 2 * (Camera.getCameraPosition().y - waterTile.getHeight() + 1f);
-			camera.getPosition().y -= cameraDistance;
-		
+			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight() - 1f);
+			camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y - cameraDistance, camera.getPosition().z));
 			camera.invertPitch();
 		
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
 			
+			camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y + cameraDistance, camera.getPosition().z));
 			//Moves the camera back to the original position
-			camera.getPosition().y += cameraDistance;
+			//camera.getPosition().y += cameraDistance;
 			camera.invertPitch();
 			
 			

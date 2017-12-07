@@ -62,7 +62,7 @@ public class MastrerRendrer {
 	public void render(List<Terrain> terrains, List<Entity> entities, Light sun, Camera camera, Vector4f clipPlane) {
 		
 		prepare();
-		
+		skyboxRendrer.render(camera, red, green, blue);
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(red, green, blue);
@@ -79,7 +79,7 @@ public class MastrerRendrer {
 		terrainRendrer.render(this.terrains);
 		terrainShader.stop();
 		
-		//skyboxRendrer.render(camera, red, green, blue);
+		
 	}
 	
 	
@@ -146,5 +146,11 @@ public class MastrerRendrer {
 	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
+	}
+	public static float getNearPlane() {
+		return NEAR_PLANE;
+	}
+	public static float getFarPlane() {
+		return FAR_PLANE;
 	}
 }
