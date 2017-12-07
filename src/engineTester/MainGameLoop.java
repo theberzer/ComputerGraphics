@@ -89,12 +89,8 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-<<<<<<< Updated upstream
 		WaterTile waterTile = new WaterTile(570,300,-50 );
-		camera.setPosition(new Vector3f(300,0, 570));
-=======
-		WaterTile waterTile = new WaterTile(0,50,0);
->>>>>>> Stashed changes
+
 		
 		
 		List<WaterTile> waterTileList = new ArrayList<>();

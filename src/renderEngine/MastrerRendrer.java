@@ -63,7 +63,7 @@ public class MastrerRendrer {
 	public void render(List<Terrain> terrains, List<Entity> entities, Light sun, Camera camera, Vector4f clipPlane) {
 		
 		prepare();
-		skyboxRendrer.render(camera, red, green, blue);
+		skyboxRendrer.render(camera);
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(color.x, color.y, color.z);
