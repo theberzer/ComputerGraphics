@@ -1,8 +1,12 @@
 package entities;
 
+import java.util.ArrayList;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
+
+import terrains.Terrain;
 
 /**
  * @author berzi
@@ -13,12 +17,22 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Camera {
 
-	private static Vector3f cameraPosition;
-	private Vector3f position = new Vector3f(0, 70, 0);
+	private static Vector3f cameraPosition = new Vector3f(-2000, 70, -2000);
+	
+	private Vector3f position;
 	private float pitch, yaw, roll;
+	
+
 
 	public Camera() {
-		cameraPosition = position;
+		ArrayList<Terrain> terrains = Terrain.getTerrains();
+		for (Terrain t : terrains) {
+			cameraPosition.x = cameraPosition.x;
+			cameraPosition.y = t.getHeight(cameraPosition.x, cameraPosition.z) + 20;
+			cameraPosition.z = cameraPosition.z;
+			position = cameraPosition;
+
+		}
 	}
 
 	public void move() {

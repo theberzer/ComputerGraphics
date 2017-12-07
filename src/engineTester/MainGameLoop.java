@@ -52,11 +52,9 @@ public class MainGameLoop {
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-		Terrain terrain = new Terrain(0, 0, SEED, loader , texturePack, blendMap);
+		Terrain terrain = new Terrain(-1, -1, SEED, loader , texturePack, blendMap);
 		terrains.add(terrain);
 	
-		Terrain terrain1 = new Terrain(-1,0, SEED, loader , texturePack, blendMap);
-		terrains.add(terrain1);
 
 		
 		Light light = new Light();
