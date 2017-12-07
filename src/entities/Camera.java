@@ -31,7 +31,6 @@ public class Camera {
 			cameraPosition.y = t.getHeight(cameraPosition.x, cameraPosition.z) + 20;
 			cameraPosition.z = cameraPosition.z;
 			position = cameraPosition;
-
 		}
 	}
 
@@ -111,7 +110,7 @@ public class Camera {
 	}
 
 	public void invertPitch() {
-		pitch = -pitch;
+		this.pitch = -pitch;
 	}
 	
 

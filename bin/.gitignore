@@ -1,10 +1,7 @@
-/textures/
-/renderEngine/
-/skyBox/
-/shaders/
-/engineTester/
-/entities/
+/gui/
 /terrains/
 /water/
-/gui/
-/toolbox/
+/shaders/
+/engineTester/
+/renderEngine/
+/entities/

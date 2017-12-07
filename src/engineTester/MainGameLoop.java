@@ -89,12 +89,12 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(camera.getCameraPosition().x,camera.getCameraPosition().y, camera.getCameraPosition().z);
+		WaterTile waterTile = new WaterTile(0,0,0);
 		
 		
-		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
+		GuiTexture reflectionGui = new GuiTexture(waterFrameBuffer.getReflectionTexture(),new Vector2f(-0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
 		guis.add(reflectionGui);
-		GuiTexture reflectionGui2 = new GuiTexture(waterFrameBuffer.getRefractionTexture(),new Vector2f(0.5f, 0.25f), new Vector2f(0.25f, 0.25f));
+		GuiTexture reflectionGui2 = new GuiTexture(waterFrameBuffer.getRefractionTexture(),new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
 		guis.add(reflectionGui2);
 		
 		List<WaterTile> waterTileList = new ArrayList<>();
@@ -118,29 +118,29 @@ public class MainGameLoop {
 			}
 			
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+			
 			waterFrameBuffer.bindReflectionFrameBuffer();
 			
-			//Needs to move the camera to properly capture the "reflected" image
+			//Move the camera to properly capture the "reflected" image
 			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight() + 1f);
 			camera.getPosition().y -= cameraDistance;
 			camera.invertPitch();
+			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
 			
 			//Moves the camera back to the original position
 			camera.getPosition().y += cameraDistance;
 			camera.invertPitch();
 			
-			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
-			
 			
 			waterFrameBuffer.bindRefractionFrameBuffer();
-			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, waterTile.getHeight()));
+			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, waterTile.getHeight()));
 			waterFrameBuffer.unbindFrameBuffer();
 			// //////////////////////////////////////////////
 			
 			
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 			
-			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, 1));
+			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, 100));
 				
 			waterRenderer.render(waterTileList, camera, light);
 			guiRenderer.render(guis);

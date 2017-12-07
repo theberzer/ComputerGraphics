@@ -25,6 +25,7 @@ const float gradient = 1.5;
 void main(){
 	//calculations helping with finding the relative position of the object in relation to light sources
 	vec4 worldPosition = tranformationMatrix * vec4(position, 1.0);
+	gl_ClipDistance[0] = dot(worldPosition, plane);
 	vec4 positionRelativeToCam = viewMatrix * worldPosition;
 	gl_Position = projectionMatrix * positionRelativeToCam;
 	pass_textureCoords = textureCoords * 40.0;
@@ -37,5 +38,5 @@ void main(){
 	visibility = exp(-pow((distance * density), gradient));
 	visibility = clamp(visibility, 0.0, 1.0);
 	
-	gl_ClipDistance[0] = dot(worldPosition, plane) ;
+	
 }

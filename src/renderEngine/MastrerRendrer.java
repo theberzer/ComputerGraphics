@@ -75,6 +75,7 @@ public class MastrerRendrer {
 		terrainShader.loadSkyColour(red, green, blue);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
+		terrainShader.loadPlane(clipPlane);
 		terrainRendrer.render(this.terrains);
 		terrainShader.stop();
 		
@@ -103,7 +104,7 @@ public class MastrerRendrer {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(red, green, blue, 1);
 	}
-
+ 
 	private void createProjectionMatrix() {
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
