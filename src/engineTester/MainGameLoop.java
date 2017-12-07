@@ -89,7 +89,7 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(570,300,-50 );
+		WaterTile waterTile = new WaterTile(2000,2000,-50);
 
 		
 		
@@ -116,11 +116,11 @@ public class MainGameLoop {
 			
 			waterFrameBuffer.bindReflectionFrameBuffer();
 			//Move the camera to properly capture the "reflected" image
-			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight() - 1f);
+			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight());
 			camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y - cameraDistance, camera.getPosition().z));
 			camera.invertPitch();
 		
-			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight()));
+			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight() + 1f));
 			
 			camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y + cameraDistance, camera.getPosition().z));
 			//Moves the camera back to the original position
@@ -130,7 +130,7 @@ public class MainGameLoop {
 			
 			
 			waterFrameBuffer.bindRefractionFrameBuffer();
-			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, waterTile.getHeight()));
+			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, waterTile.getHeight() + 1f));
 			waterFrameBuffer.unbindFrameBuffer();
 			// //////////////////////////////////////////////
 			
