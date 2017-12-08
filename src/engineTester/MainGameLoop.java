@@ -15,8 +15,6 @@ import org.lwjgl.util.vector.Vector4f;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
-import gui.GuiRenderer;
-import gui.GuiTexture;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -226,8 +224,8 @@ public class MainGameLoop {
 		ParticleMaster.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
-		//guiRenderer.cleanUp();
 		waterShader.cleanUp();
+		waterFrameBuffer.cleanUp();
 
 		// Close
 		DisplayManager.closeDisplay();
