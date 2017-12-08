@@ -1,9 +1,4 @@
-/textures/
-/toolbox/
-/entities/
-/gui/
+/particles/
 /renderEngine/
-/shaders/
-/terrains/
+/toolbox/
 /engineTester/
-/models/

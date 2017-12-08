@@ -137,7 +137,6 @@ public class SkyBoxRenderer {
 		float noon = 10000;
 		float night = 19000;
 		float end = 24000;
-		Vector3f lightIntennsity;
 
 		time %= end;
 
@@ -183,8 +182,7 @@ public class SkyBoxRenderer {
 			intensity = 0.1f;
 		}
 
-		lightIntennsity = new Vector3f(intensity, intensity, intensity);
-		Light.setIntensity(lightIntennsity);
+		Light.setIntensity(new Vector3f(intensity, intensity, intensity));
 		Light.setPosition(x, y, z);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, cube);
