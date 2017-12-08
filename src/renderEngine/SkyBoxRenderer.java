@@ -15,7 +15,7 @@ import toolbox.Colors;
 
 public class SkyBoxRenderer {
 
-	private static final float SIZE = 3000f;
+	private static final float SIZE = 4000f;
 	private static final float[] VERTICES = { -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE,
 			-SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE,
 
@@ -131,6 +131,10 @@ public class SkyBoxRenderer {
 			
 		if (intensity > 1) {
 			intensity = 1;
+		}
+		
+		if (intensity < 0.1f) {
+			intensity = 0.1f;
 		}
 		
 		lightIntennsity.set(intensity, intensity, intensity);
