@@ -88,4 +88,8 @@ public class Maths {
 		Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
 		return matrix;
 	}
+	
+	public static float randomIntFromInterval(float min, float max) {
+	    return (float) Math.floor(Math.random()*(max-min+1)+min);
+	}
 }

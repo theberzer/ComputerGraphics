@@ -32,6 +32,7 @@ import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import textures.WaterTile;
 import toolbox.FrameBuffer;
+import toolbox.Maths;
 
 /**
  * The Class MainGameLoop.
@@ -91,31 +92,55 @@ public class MainGameLoop {
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
 		 // Init of texture for fire particlesystem
-		ParticleTexture pSmokeTexture = new ParticleTexture(loader.loadTexture("particle/smoke"), 8, false); // (name of file, number of rows in atlastexture)
+		ParticleTexture pSmokeTexture = new ParticleTexture(loader.loadTexture("particle/smoke"), 8, true); // (name of file, number of rows in atlastexture)
 		ParticleSystem pSmokeSystem = new ParticleSystem(pSmokeTexture // texture of the system
-				, 500 // Number of particles to spawn each frame
-				,3 // Init velocity of the particles
-				, -1f // Gravity effect
-				, 15 // Time the particles are alive
+				, 100 // Number of particles to spawn each frame
+				,-3 // Init velocity of the particles
+				, -2f // Gravity effect
+				, 3 // Time the particles are alive
 				, 10 //Scalemodifier
-				, 3); // isSquared (1 is not a square) 
+				, 1); // isSquared (1 is not a square) 
 
 		pSmokeSystem.randomizeRotation();
 		pSmokeSystem.setScaleError(0.8f);
 		pSmokeSystem.setLifeError(0.5f);
 		pSmokeSystem.setSpeedError(0.9f);
-		
-		 // Init of texture for fire particlesystem
-		ParticleTexture pFireTexture = new ParticleTexture(loader.loadTexture("particle/particleAtlas"), 4, true); // (name of file, number of rows in atlastexture)
-		ParticleSystem pFireSystem = new ParticleSystem(pFireTexture // texture of the system
-				, 500 // Number of particles to spawn each frame
-				,3 // Init velocity of the particles
-				,-1f // Gravity effect
-				, 15f // Time the particles are alive
-				, 10
-				, 10); // Scalemodifier of the particles
 
-		pFireSystem.setLifeError(0.5f);
+		 // Init of texture for fire particlesystem
+		ParticleTexture pFireTexture = new ParticleTexture(loader.loadTexture("particle/fire"), 8, true); // (name of file, number of rows in atlastexture)
+		ParticleSystem pFireSystem = new ParticleSystem(pFireTexture // texture of the system
+				, 30 // Number of particles to spawn each frame
+				,-1f // Init velocity of the particles
+				,-1f // Gravity effect
+				, 2f // Time the particles are alive
+				, 20
+				, 1); // Scalemodifier of the particles
+		 // Init of texture for fire particlesystem
+		
+		ParticleTexture pWeatherTexture = new ParticleTexture(loader.loadTexture("particle/cosmic"), 4, false); // (name of file, number of rows in atlastexture)
+		ParticleSystem weatherSystem = new ParticleSystem(pWeatherTexture // texture of the system
+				, 1000 // Number of particles to spawn each frame
+				,10 // Init velocity of the particles
+				,0 // Gravity effect
+				,5 // Time the particles are alive
+				, 1
+				, 1000); // Scalemodifier of the particles
+
+		weatherSystem.randomizeRotation();
+		weatherSystem.setScaleError(0.8f);
+		weatherSystem.setLifeError(0.5f);
+		weatherSystem.setSpeedError(0.9f);
+		
+		List<Vector3f> firePositions = new ArrayList<Vector3f>();
+		for(int i = 0; i<50; i++) {
+			float randX, randZ;
+			float camX = camera.getPosition().x;
+			float camZ = camera.getPosition().z;
+			randX = Maths.randomIntFromInterval(camX-1000, camX+1000);
+			randZ = Maths.randomIntFromInterval(camZ-1000, camZ+1000);
+			firePositions.add(new Vector3f(randX, terrains.get(0).getHeight(randX, randZ) + 5, randZ));
+		}
+		
 		
 		/*
 		 * End of particle init
@@ -168,13 +193,22 @@ public class MainGameLoop {
 					renderer.processEntity(e);
 				}
 			}
-			
 
+			// For each of the positions - check if over waterlevel
+			// if true - generate fire particles and above those, smoke
+			for(Vector3f positions : firePositions) {
+				if(positions.y > -15f) {
+					//Adding particles			
+					pFireSystem.generateParticles(positions);
+					pSmokeSystem.generateParticles(new Vector3f(positions.x, positions.y+10, positions.z));
+				}
+			}
 			
-
-			//Adding particles			
-			pFireSystem.generateParticles(new Vector3f(5000,terrain.getHeight(5000, 5000)+200,5000));
-			pSmokeSystem.generateParticles(new Vector3f(5100,terrain.getHeight(5000, 5000)+200, 5100));
+			// Generate the gloomy weather system if the time is between 20:00 and 08:00 
+			if(DisplayManager.getInGameHour() < 8 || DisplayManager.getInGameHour() > 20) {
+				weatherSystem.generateParticles(new Vector3f(camera.getPosition().x-500, camera.getPosition().y, camera.getPosition().z-500));
+			}
+				
 			// Updates the particles
 			ParticleMaster.update(camera);
 

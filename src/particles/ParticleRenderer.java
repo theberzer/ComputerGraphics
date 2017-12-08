@@ -24,9 +24,12 @@ import toolbox.Maths;
 
 public class ParticleRenderer {
 	
+	// Vertices for a particle
 	private static final float[] VERTICES = {-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
+	
+	// Max amount of particles that can be on the screen
 	private static final int MAX_INSTANCES = 1000000;
-	private static final int INSTANCE_DATA_LENGTH = 21;
+	private static final int INSTANCE_DATA_LENGTH = 21; // 
 	
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
 	

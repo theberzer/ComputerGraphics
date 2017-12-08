@@ -108,7 +108,6 @@ public class DisplayManager {
 		float timeHour = timeMin / 60f;
 		
 		timeHour %= 24;
-		System.out.println(timeHour);
 		
 
 		return timeHour;

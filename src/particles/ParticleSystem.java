@@ -48,24 +48,30 @@ public class ParticleSystem {
     // Function for generating particles in a system
     // Called from mainGameLoop
     public void generateParticles(Vector3f systemCenter){
-        float delta = DisplayManager.getDelta();
-        float particlesToCreate = pps * delta;
-        int count = (int) Math.floor(particlesToCreate);
-        float partialParticle = particlesToCreate % 1;
-        for(int i=0;i<count;i++){
-            emitParticle(systemCenter);
+        float delta = DisplayManager.getDelta(); // Get seconds per frame
+        float particlesToCreate = pps * delta; // How many particles to generate per frame
+        int count = (int) Math.floor(particlesToCreate); 
+        float partialParticle = particlesToCreate % 1; // If there is any overflow 
+        for(int i=0;i<count;i++) {
+            emitParticle(systemCenter); // Emits a particle
         }
-        if(Math.random() < partialParticle){
+        if(Math.random() < partialParticle) { // Random test to check if the overflow emits a particle
             emitParticle(systemCenter);
         }
     }
     
+    // Function that creates a new particle
+    // Uses many generate functions to init the particle
+    // If squaredValue is set - (mother value than 1) it randomly
+    // places the particle within a square
     private void emitParticle(Vector3f center) {
         Vector3f velocity = null;
-        float rand = (float)Math.random()*squaredValue + center.x;
-        float rand2 = (float)Math.random()*squaredValue + center.z;
-        System.out.println(rand + ", " + rand2);
-        Vector3f position = new Vector3f(rand, center.y, rand2);
+        if(squaredValue != 1) {       	
+	        float rand = (float)Math.random()*squaredValue + center.x;
+	        float rand2 = (float)Math.random()*squaredValue + center.z;
+	        float rand3 = (float)Math.random()*squaredValue/2 + center.y/2;
+	        center = new Vector3f(rand, rand3, rand2);
+        }
         if(direction!=null){
             velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
         }else{
@@ -75,7 +81,7 @@ public class ParticleSystem {
         velocity.scale(generateValue(averageSpeed, speedError));
         float scale = generateValue(averageScale, scaleError);
         float lifeLength = generateValue(averageLifeLength, lifeError);
-        new Particle(texture, new Vector3f(position), velocity, gravityComplient, lifeLength, generateRotation(), scale);
+        new Particle(texture, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale);
     }
     
     public void setDirection(Vector3f direction, float deviation) {
