@@ -28,12 +28,12 @@ import models.TexturedModel;
  *         MasterRenderer class that i will utilise to create all objects that
  *         need rendering
  *         
- *
  */
 public class MastrerRendrer {
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.01f;
 	private static final float FAR_PLANE = 6000;
+	private static final float FAR_PLANE = 5000;
 
 	private static Vector3f color = Colors.convertToFloat(new Vector3f(149, 152, 155));
 

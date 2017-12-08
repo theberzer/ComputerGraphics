@@ -1,4 +1,4 @@
-package water;
+package toolbox;
 
 import java.nio.ByteBuffer;
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import models.RawModel;
 import shaders.WaterShader;
+import textures.WaterTile;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -16,6 +17,7 @@ import org.lwjgl.util.vector.Vector3f;
 import toolbox.Maths;
 import water.WaterFrameBuffer;
 import water.WaterTile;
+import toolbox.WaterFrameBuffer;
 import entities.Camera;
 import entities.Light;
 /**

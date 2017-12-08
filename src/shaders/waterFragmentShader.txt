@@ -17,7 +17,7 @@ uniform float planeFar;
 
 out vec4 out_Color;
 
-const float distortionStrength = 0.02;
+const float distortionStrength = 0.06;
 const float shineDamper = 20.0;
 const float reflectivity = 0.6;
 

@@ -42,7 +42,7 @@ public class Terrain {
 		try {
 			generator = hg.get(0);
 		} catch (IndexOutOfBoundsException e) {
-			generator = new HeightGenerator(10000, 10000, VERTEX_COUNT, seed);
+			generator = new HeightGenerator(gridX, gridZ, VERTEX_COUNT, seed);
 			hg.add(generator);
 		}
 		
@@ -52,7 +52,7 @@ public class Terrain {
 
 	private RawModel generateTerrain(Loader loader, HeightGenerator generator) {
 
-		int VERTEX_COUNT = 512;
+		int VERTEX_COUNT = 256;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 
 		int count = VERTEX_COUNT * VERTEX_COUNT;

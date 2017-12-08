@@ -129,7 +129,6 @@ public class SkyBoxRenderer {
 			intensity -= 0.00008f;
 		}
 			
-		
 		if (intensity > 1) {
 			intensity = 1;
 		}
@@ -143,5 +142,4 @@ public class SkyBoxRenderer {
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, cube1);
 		shader.loadBlend(blend);
 	}
-
 }
