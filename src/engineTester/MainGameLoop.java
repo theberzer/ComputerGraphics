@@ -17,6 +17,9 @@ import entities.Entity;
 import entities.Light;
 import gui.GuiRenderer;
 import gui.GuiTexture;
+import particles.ParticleMaster;
+import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MastrerRendrer;
@@ -72,6 +75,44 @@ public class MainGameLoop {
 
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer(loader);
+		
+
+		// Instance of particle handler
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
+		
+		
+		/**
+		 * Particle Systems
+		 */
+
+		 // Init of texture for fire particlesystem
+		ParticleTexture pSmokeTexture = new ParticleTexture(loader.loadTexture("particle/smoke"), 8, false); // (name of file, number of rows in atlastexture)
+		ParticleSystem pSmokeSystem = new ParticleSystem(pSmokeTexture // texture of the system
+				, 500 // Number of particles to spawn each frame
+				,1 // Init velocity of the particles
+				, -0.1f // Gravity effect
+				, 10 // Time the particles are alive
+				, 5); //Scalemodifier
+
+		pSmokeSystem.randomizeRotation();
+		pSmokeSystem.setScaleError(0.8f);
+		pSmokeSystem.setLifeError(0.5f);
+		pSmokeSystem.setSpeedError(0.9f);
+		
+		 // Init of texture for fire particlesystem
+		ParticleTexture pFireTexture = new ParticleTexture(loader.loadTexture("particle/fire"), 8, true); // (name of file, number of rows in atlastexture)
+		ParticleSystem pFireSystem = new ParticleSystem(pFireTexture // texture of the system
+				, 300 // Number of particles to spawn each frame
+				,3 // Init velocity of the particles
+				, -0.5f // Gravity effect
+				, 1.5f // Time the particles are alive
+				, 10); // Scalemodifier of the particles
+
+		pFireSystem.setLifeError(0.5f);
+		
+		/*
+		 * End of particle init
+		 */
 
 		/**
 		 * GUI
@@ -111,6 +152,12 @@ public class MainGameLoop {
 					renderer.processEntity(e);
 				}
 			}
+			
+			//Adding particles			
+			pFireSystem.generateParticles(new Vector3f(5000,100,5000));
+			pSmokeSystem.generateParticles(new Vector3f(5020,terrain.getHeight(5020, 5020)+10, 5020));
+			// Updates the particles
+			ParticleMaster.update(camera);
 
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 
@@ -141,6 +188,10 @@ public class MainGameLoop {
 			waterRenderer.render(waterTileList, camera, light);
 			// guiRenderer.render(guis);
 
+
+			// Render all particles
+			ParticleMaster.renderParticles(camera);
+			
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
 
@@ -150,6 +201,7 @@ public class MainGameLoop {
 
 		// Clean up - deletes instances of the object so that it does not clog
 		// up your memory
+		ParticleMaster.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUP();
 		//guiRenderer.cleanUp();
