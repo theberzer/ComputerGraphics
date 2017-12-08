@@ -104,7 +104,8 @@ public class Camera {
 			position.z -= toZ * movement;
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
-			}
+			} 
+			
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_CAPITAL)) {
@@ -145,6 +146,8 @@ public class Camera {
 			Light.setPosition(5000, 1000, 3000);
 		}
 
+		
+		
 		cameraPosition = position;
 	}
 
