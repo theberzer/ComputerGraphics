@@ -3,6 +3,8 @@
  */
 package renderEngine;
 
+import java.text.DecimalFormat;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
@@ -34,6 +36,12 @@ public class DisplayManager {
 	private static float delta;
 	
 	private static float time;
+	
+	private static float lastFPS;
+	
+	private static int fps;
+	
+	private static int day = 0;
 
 	/**
 	 * Creates the display.
@@ -44,12 +52,12 @@ public class DisplayManager {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("Computer Graphics Assaignment 1 v1");
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		lastFrameTime = getTime();
+		lastFPS = getTime();
 	}
 
 	/**
@@ -62,6 +70,7 @@ public class DisplayManager {
 	    delta = (currentFrameTime - lastFrameTime) / 1000f;
 	    lastFrameTime = currentFrameTime;
 	    time += getDelta() * 1000;
+	    updateFPS();
 	}
 
 	/**
@@ -106,13 +115,42 @@ public class DisplayManager {
 	public  static float getInGameHour() {
 		float timeMin = time / 60f;
 		float timeHour = timeMin / 60f;
+		day = (int) Math.floor(timeHour / 24);
 		
 		timeHour %= 24;
-		
-
+			
 		return timeHour;
 	}
 	
+	
+    public static void updateFPS() {
+        if (getTime() - lastFPS > 1000) {
+            Display.setTitle("FPS: " + fps + " Hour: " + getInGameHour() +" Day: " + day);
+            fps = 0;
+            lastFPS += 1000;
+        }
+        fps++;
+    }
+    
+    public static boolean isBright() {
+    	boolean answer = true;
+    	    	
+    	if (getInGameHour() >= 0  && getInGameHour() < 5) {
+			answer = false;
+		} else if (getInGameHour() >= 5 && getInGameHour() < 10) {
+			answer = true;
+		} else if (getInGameHour() >= 10 && getInGameHour() < 19) {
+			answer = true;
+		} else {
+			answer = false;
+		}
+    	
+    	return answer;
+    }
+    
+    public static int getDay() {
+    	return day;
+    }
 	
 
 }

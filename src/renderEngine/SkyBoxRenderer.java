@@ -64,9 +64,6 @@ public class SkyBoxRenderer {
 	/** The night texture ID. */
 	private int nightTextureID;
 	
-	/** The time. */
-	private float time;
-	
 	/** The x. */
 	private float x = 0;
 	
@@ -77,7 +74,8 @@ public class SkyBoxRenderer {
 	private float z = 1000;
 	
 	/** The intensity. */
-	private float intensity = 0.9f;
+	private float intensity = 0.1f;
+	 private int counter;
 	
 	/** The day color. */
 	private Vector3f dayColor = Colors.convertToFloat(new Vector3f(93, 94, 96));
@@ -139,19 +137,16 @@ public class SkyBoxRenderer {
 		float noon = 10;
 		float night = 19;
 		float end = 24;
-
-		;
-
+		
 		if (timeHour >= start && timeHour < morning) {
 			cube = nightTextureID;
 			cube1 = nightTextureID;
 			blend = (timeHour - start) / (morning - start);
-			intensity += 0.2f;
 		} else if (timeHour >= morning && timeHour < noon) {
 			cube = nightTextureID;
 			cube1 = textureID;
 			blend = (timeHour - morning) / (noon - morning);
-
+			intensity += 0.0002f;
 		} else if (timeHour >= noon && timeHour < night) {
 			cube = textureID;
 			cube1 = textureID;
@@ -160,14 +155,8 @@ public class SkyBoxRenderer {
 			cube = textureID;
 			cube1 = nightTextureID;
 			blend = (timeHour - night) / (end - night);
-		}
+			intensity -= 0.0002f;
 
-		if (intensity > 1) {
-			intensity = 1;
-		}
-
-		if (intensity < 0.1f) {
-			intensity = 0.1f;
 		}
 
 		Light.setIntensity(new Vector3f(intensity, intensity, intensity));
