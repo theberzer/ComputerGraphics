@@ -52,14 +52,14 @@ public class Particle {
 	protected boolean update(Camera camera) {
 		
 		// Calculating velocity with a time-function from the displaymanager - only effected by gravity in the y-coord
-		 velocity.y += -9.81 * gravityEffect * DisplayManager.getFrameTimeSeconds(); 
+		 velocity.y += -9.81 * gravityEffect * DisplayManager.getDelta(); 
 		 tempVec.set(velocity); // Set the new value in tmp
-		 tempVec.scale(DisplayManager.getFrameTimeSeconds()); // Scaling the new vector to the time per frame
+		 tempVec.scale(DisplayManager.getDelta()); // Scaling the new vector to the time per frame
 		 Vector3f.add(tempVec, position, position); // Updating the position vector
 		 // Finding the distance from the camera - lengthSquared() because of efficiency 
 		 distance = Vector3f.sub(camera.getPosition(), position, null).lengthSquared();
 		 updateTextureCoordsInfo(); // Updating the offsets and blend
-		 elapsedTime += DisplayManager.getFrameTimeSeconds(); // Extending the elapsed time
+		 elapsedTime += DisplayManager.getDelta(); // Extending the elapsed time
 		 return elapsedTime < lifeLength; // Return bool (true if alive, false if not alive)
 	}
 	
