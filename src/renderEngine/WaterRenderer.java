@@ -107,7 +107,7 @@ public class WaterRenderer {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		// This value 60 should be the fps the game is running at.
-		moveFactor += waveSpeed * DisplayManager.getFrameTimeSeconds();
+		moveFactor += WAVE_SPEED * DisplayManager.getDelta();
 		moveFactor %= 1;
 		shader.loadMoveFactor(moveFactor);
 		shader.loadLight(light);

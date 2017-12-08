@@ -22,7 +22,7 @@ public class SkyboxShader extends ShaderProgram {
 	private static final String FRAGMENT_FILE = "src/shaders/skyboxFragmentShader.txt";
 	
 	/** The Constant ROTATE. */
-	private static final float ROTATE = 1f;
+	private static final float ROTATE = 0.05f;
 
 	/** The location projection matrix. */
 	private int location_projectionMatrix;
@@ -83,7 +83,7 @@ public class SkyboxShader extends ShaderProgram {
 		matrix.m30 = 0;
 		matrix.m31 = 0;
 		matrix.m32 = 0;
-		rotation += ROTATE * DisplayManager.getFrameTimeSeconds();
+		rotation += ROTATE * DisplayManager.getDelta();
 		Matrix4f.rotate((float) Math.toRadians(rotation), new Vector3f(0, 1, 0), matrix, matrix);
 		super.loadMatrix(location_viewMatrix, matrix);
 	}
