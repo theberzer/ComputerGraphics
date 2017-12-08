@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import renderEngine.DisplayManager;
 import terrains.Terrain;
 import textures.WaterTile;
 
@@ -34,6 +35,11 @@ public class Camera {
 	
 	/** The counter. */
 	private int counter = 0;
+		
+	private float movement;
+	
+	private float movementSpeed = 100;
+
 
 	/**
 	 * Instantiates a new camera.
@@ -51,6 +57,7 @@ public class Camera {
 	 * Move.
 	 */
 	public void move() {
+		movement = movementSpeed * DisplayManager.getDelta();
 		// This code was found in a comment during a binge on youtube and helps
 		// with the camera movement
 		float arg_yaw = Mouse.getDX();
@@ -62,8 +69,8 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			float toZ = ((float) Math.sin(Math.toRadians(yaw + 90)));
 			float toX = ((float) Math.cos(Math.toRadians(yaw + 90)));
-			position.x -= toX;
-			position.z -= toZ;
+			position.x -= toX * movement;
+			position.z -= toZ * movement;
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
@@ -73,8 +80,8 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			float toZ = ((float) Math.sin(Math.toRadians(yaw + 90)));
 			float toX = ((float) Math.cos(Math.toRadians(yaw + 90)));
-			position.x += toX;
-			position.z += toZ;
+			position.x += toX * movement;
+			position.z += toZ * movement;
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
@@ -83,8 +90,8 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			float toZ = ((float) Math.sin(Math.toRadians(yaw)));
 			float toX = ((float) Math.cos(Math.toRadians(yaw)));
-			position.x += toX;
-			position.z += toZ;
+			position.x += toX * movement;
+			position.z += toZ * movement;
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
@@ -93,8 +100,8 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			float toZ = ((float) Math.sin(Math.toRadians(yaw)));
 			float toX = ((float) Math.cos(Math.toRadians(yaw)));
-			position.x -= toX;
-			position.z -= toZ;
+			position.x -= toX * movement;
+			position.z -= toZ * movement;
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
