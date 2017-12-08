@@ -112,18 +112,21 @@ public class Loader {
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -0.5f);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 		
 		int textureID;
+		
 		try {
 			textureID = texture.getTextureID();
 			textures.add(textureID);
-			
 			return textureID;
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.exit(0);
 			return 1;
 		}
 		
