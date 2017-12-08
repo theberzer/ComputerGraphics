@@ -1,6 +1,7 @@
+/*
+ * 
+ */
 package entities;
-
-import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -9,21 +10,33 @@ import org.lwjgl.util.vector.Vector3f;
 import terrains.Terrain;
 
 /**
+ * The Class Camera.
+ *
  * @author berzi
  * 
  *         Camera classs that helps with moving the entire world in relation to
  *         your view
- *
  */
 public class Camera {
 
+	/** The camera position. */
 	private static Vector3f cameraPosition = new Vector3f(-2000, 70, -2000);
 
+	/** The position. */
 	private Vector3f position;
+	
+	/** The roll. */
 	private float pitch, yaw, roll;
+	
+	/** The t. */
 	private Terrain t;
+	
+	/** The counter. */
 	private int counter = 0;
 
+	/**
+	 * Instantiates a new camera.
+	 */
 	public Camera() {
 		t = Terrain.getTerrain();
 		cameraPosition.x = cameraPosition.x;
@@ -33,6 +46,9 @@ public class Camera {
 
 	}
 
+	/**
+	 * Move.
+	 */
 	public void move() {
 		// This code was found in a comment during a binge on youtube and helps
 		// with the camera movement
@@ -50,7 +66,7 @@ public class Camera {
 			if (counter == 0) {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
-			
+
 		}
 		// Backwards
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -82,7 +98,7 @@ public class Camera {
 				position.y = t.getHeight(position.x, position.z) + 50;
 			}
 		}
-		
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_CAPITAL)) {
 			if (counter == 0)
 				counter++;
@@ -101,38 +117,76 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			System.exit(0);
 		}
-		
-	cameraPosition = position;
+
+		cameraPosition = position;
 	}
 
+	/**
+	 * Gets the position.
+	 *
+	 * @return the position
+	 */
 	public Vector3f getPosition() {
 		return position;
 	}
 
+	/**
+	 * Gets the pitch.
+	 *
+	 * @return the pitch
+	 */
 	public float getPitch() {
 		return pitch;
 	}
 
+	/**
+	 * Gets the yaw.
+	 *
+	 * @return the yaw
+	 */
 	public float getYaw() {
 		return yaw;
 	}
 
+	/**
+	 * Gets the roll.
+	 *
+	 * @return the roll
+	 */
 	public float getRoll() {
 		return roll;
 	}
 
+	/**
+	 * Gets the camera position.
+	 *
+	 * @return the camera position
+	 */
 	public static Vector3f getCameraPosition() {
 		return cameraPosition;
 	}
 
+	/**
+	 * Sets the camera position.
+	 *
+	 * @param cameraPosition the new camera position
+	 */
 	public static void setCameraPosition(Vector3f cameraPosition) {
 		Camera.cameraPosition = cameraPosition;
 	}
 
+	/**
+	 * Sets the position.
+	 *
+	 * @param cameraPosition the new position
+	 */
 	public void setPosition(Vector3f cameraPosition) {
 		position = cameraPosition;
 	}
 
+	/**
+	 * Invert pitch.
+	 */
 	public void invertPitch() {
 		pitch = -pitch;
 	}

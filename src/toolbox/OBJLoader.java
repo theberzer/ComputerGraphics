@@ -1,4 +1,7 @@
-package renderEngine;
+/*
+ * 
+ */
+package toolbox;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,14 +14,24 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
+import renderEngine.Loader;
 
 /**
- * @author berzi
+ * The Class OBJLoader.
  *
+ * @author berzi
+ * 
  *         helper class to load OBJ files
  */
 public class OBJLoader {
 
+	/**
+	 * Load obj model.
+	 *
+	 * @param fileName the file name
+	 * @param loader the loader
+	 * @return the raw model
+	 */
 	public static RawModel loadObjModel(String fileName, Loader loader) {
 		FileReader fr = null;
 		try {
@@ -27,6 +40,7 @@ public class OBJLoader {
 			System.err.println("Couldn't load file!");
 			e.printStackTrace();
 		}
+		
 		BufferedReader reader = new BufferedReader(fr);
 		String line;
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
@@ -90,9 +104,20 @@ public class OBJLoader {
 		for (int i = 0; i < indices.size(); i++) {
 			indicesArray[i] = indices.get(i);
 		}
+		
 		return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 	}
 
+	/**
+	 * Process vertex.
+	 *
+	 * @param vertexData the vertex data
+	 * @param indices the indices
+	 * @param textures the textures
+	 * @param normals the normals
+	 * @param textureArray the texture array
+	 * @param normalsArray the normals array
+	 */
 	private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,
 			List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
 		int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;

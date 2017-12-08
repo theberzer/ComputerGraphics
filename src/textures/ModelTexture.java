@@ -1,39 +1,78 @@
+/*
+ * 
+ */
 package textures;
 
 /**
+ * The Class ModelTexture.
+ *
  * @author berzi
  * 
- *	A Texture Model, used to set the texture, shine and reflectivity
- *
+ *         A Texture Model, used to set the texture, shine and reflectivity
  */
 public class ModelTexture {
 
-		private int textureID;
-		private float shineDamper = 1;
-		private float reflectivity = 0;
-		
-		public ModelTexture(int id){
-			this.textureID = id;
-		}
+	/** The texture ID. */
+	private int textureID;
+	
+	/** The shine damper. */
+	private float shineDamper = 1;
+	
+	/** The reflectivity. */
+	private float reflectivity = 0;
 
-		public int getTextureID() {
-			return textureID;
-		}
+	/**
+	 * Instantiates a new model texture.
+	 *
+	 * @param id the id
+	 */
+	public ModelTexture(int id) {
+		this.textureID = id;
+	}
 
-		public float getShineDamper() {
-			return shineDamper;
-		}
+	/**
+	 * Gets the texture ID.
+	 *
+	 * @return the texture ID
+	 */
+	public int getTextureID() {
+		return textureID;
+	}
 
-		public void setShineDamper(float shineDamper) {
-			this.shineDamper = shineDamper;
-		}
-		
-		public float getReflectivity() {
-			return reflectivity;
-		}
+	/**
+	 * Gets the shine damper.
+	 *
+	 * @return the shine damper
+	 */
+	public float getShineDamper() {
+		return shineDamper;
+	}
 
-		public void setReflectivity(float reflectivity) {
-			this.reflectivity = reflectivity;
-		}
-		
+	/**
+	 * Sets the shine damper.
+	 *
+	 * @param shineDamper the new shine damper
+	 */
+	public void setShineDamper(float shineDamper) {
+		this.shineDamper = shineDamper;
+	}
+
+	/**
+	 * Gets the reflectivity.
+	 *
+	 * @return the reflectivity
+	 */
+	public float getReflectivity() {
+		return reflectivity;
+	}
+
+	/**
+	 * Sets the reflectivity.
+	 *
+	 * @param reflectivity the new reflectivity
+	 */
+	public void setReflectivity(float reflectivity) {
+		this.reflectivity = reflectivity;
+	}
+
 }

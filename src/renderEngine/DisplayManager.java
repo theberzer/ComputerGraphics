@@ -1,29 +1,43 @@
+/*
+ * 
+ */
 package renderEngine;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.opengl.ContextAttribs;
 
 /**
+ * The Class DisplayManager.
+ *
  * @author berzi
- *
+ * 
  *         Main Display class, The Display to render my objects
- *
  */
 public class DisplayManager {
 
+	/** The Constant WIDTH. */
 	private static final int WIDTH = 1280;
+	
+	/** The Constant HEIGHT. */
 	private static final int HEIGHT = 720;
+	
+	/** The Constant FPS_CAP. */
 	private static final int FPS_CAP = 120;
 
+	/** The delta. */
 	private static float delta;
-    private static long lastFrameTime;
+	
+	/** The last frame time. */
+	private static long lastFrameTime;
 
-
+	/**
+	 * Creates the display.
+	 */
 	public static void createDisplay() {
 		ContextAttribs attribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
 
@@ -38,6 +52,9 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 	}
 
+	/**
+	 * Update display.
+	 */
 	public static void updateDisplay() {
 		Display.sync(FPS_CAP);
 		long currentFrameTime = getCurrentTime();
@@ -46,26 +63,48 @@ public class DisplayManager {
 		Display.update();
 	}
 
+	/**
+	 * Close display.
+	 */
 	public static void closeDisplay() {
 		Display.destroy();
 	}
 
+	/**
+	 * Gets the frame time seconds.
+	 *
+	 * @return the frame time seconds
+	 */
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
-	
-	
+
+	/**
+	 * Gets the current time.
+	 *
+	 * @return the current time
+	 */
 	private static long getCurrentTime() {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 
+	/**
+	 * Gets the width.
+	 *
+	 * @return the width
+	 */
 	public static int getWidth() {
-		
+
 		return WIDTH;
 	}
 
+	/**
+	 * Gets the height.
+	 *
+	 * @return the height
+	 */
 	public static int getHeight() {
 		return HEIGHT;
 	}
-	
+
 }
