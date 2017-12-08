@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -17,6 +20,8 @@ import entities.Entity;
 import entities.Light;
 import gui.GuiRenderer;
 import gui.GuiTexture;
+import models.RawModel;
+import models.TexturedModel;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -26,9 +31,11 @@ import renderEngine.MastrerRendrer;
 import renderEngine.WaterRenderer;
 import shaders.WaterShader;
 import terrains.Terrain;
+import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import textures.WaterTile;
+import toolbox.OBJLoader;
 import toolbox.WaterFrameBuffer;
 
 /**
@@ -81,23 +88,22 @@ public class MainGameLoop {
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer(loader);
 		
-
-		// Instance of particle handler
-		ParticleMaster.init(loader, renderer.getProjectionMatrix());
-		
-		
 		/**
 		 * Particle Systems
 		 */
 
+		// Instance of particle handler
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
+		
 		 // Init of texture for fire particlesystem
 		ParticleTexture pSmokeTexture = new ParticleTexture(loader.loadTexture("particle/smoke"), 8, false); // (name of file, number of rows in atlastexture)
 		ParticleSystem pSmokeSystem = new ParticleSystem(pSmokeTexture // texture of the system
 				, 500 // Number of particles to spawn each frame
-				,1 // Init velocity of the particles
-				, -0.1f // Gravity effect
-				, 10 // Time the particles are alive
-				, 5); //Scalemodifier
+				,3 // Init velocity of the particles
+				, -1f // Gravity effect
+				, 15 // Time the particles are alive
+				, 10 //Scalemodifier
+				, 3); // isSquared (1 is not a square) 
 
 		pSmokeSystem.randomizeRotation();
 		pSmokeSystem.setScaleError(0.8f);
@@ -105,12 +111,13 @@ public class MainGameLoop {
 		pSmokeSystem.setSpeedError(0.9f);
 		
 		 // Init of texture for fire particlesystem
-		ParticleTexture pFireTexture = new ParticleTexture(loader.loadTexture("particle/fire"), 8, true); // (name of file, number of rows in atlastexture)
+		ParticleTexture pFireTexture = new ParticleTexture(loader.loadTexture("particle/particleAtlas"), 4, true); // (name of file, number of rows in atlastexture)
 		ParticleSystem pFireSystem = new ParticleSystem(pFireTexture // texture of the system
-				, 300 // Number of particles to spawn each frame
+				, 500 // Number of particles to spawn each frame
 				,3 // Init velocity of the particles
-				, -0.5f // Gravity effect
-				, 1.5f // Time the particles are alive
+				,-1f // Gravity effect
+				, 15f // Time the particles are alive
+				, 10
 				, 10); // Scalemodifier of the particles
 
 		pFireSystem.setLifeError(0.5f);
@@ -119,10 +126,10 @@ public class MainGameLoop {
 		 * End of particle init
 		 */
 
+
 		/**
 		 * Water
 		 */
-		
 		
 		/**
 		 * Variables to change the appearance of the water
@@ -169,8 +176,8 @@ public class MainGameLoop {
 			
 
 			//Adding particles			
-			pFireSystem.generateParticles(new Vector3f(5000,100,5000));
-			pSmokeSystem.generateParticles(new Vector3f(5020,terrain.getHeight(5020, 5020)+10, 5020));
+			pFireSystem.generateParticles(new Vector3f(5000,terrain.getHeight(5000, 5000)+200,5000));
+			pSmokeSystem.generateParticles(new Vector3f(5100,terrain.getHeight(5000, 5000)+200, 5100));
 			// Updates the particles
 			ParticleMaster.update(camera);
 
@@ -213,7 +220,6 @@ public class MainGameLoop {
 			// Render all particles
 			ParticleMaster.renderParticles(camera);
 
-			
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
 			
@@ -233,5 +239,6 @@ public class MainGameLoop {
 		DisplayManager.closeDisplay();
 
 	}
+	
 
 }

@@ -25,7 +25,7 @@ import toolbox.Maths;
 public class ParticleRenderer {
 	
 	private static final float[] VERTICES = {-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
-	private static final int MAX_INSTANCES = 10000;
+	private static final int MAX_INSTANCES = 1000000;
 	private static final int INSTANCE_DATA_LENGTH = 21;
 	
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(INSTANCE_DATA_LENGTH * MAX_INSTANCES);

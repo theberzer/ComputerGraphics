@@ -28,19 +28,21 @@ public class ParticleSystem {
     
     private Vector3f direction; // Direction of the system - in which way the particle spew out
     private float directionDeviation = 0; // Randomness factor
+    private float squaredValue;
  
     private ParticleTexture texture; // Particle texture 
     
     private Random random = new Random(); 
  
     // Standard constructor
-    public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
+    public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale, float squaredValue) {
     	this.texture = texture;
         this.pps = pps;
         this.averageSpeed = speed;
         this.gravityComplient = gravityComplient;
         this.averageLifeLength = lifeLength;
         this.averageScale = scale;
+        this.squaredValue = squaredValue;
     }
     
     // Function for generating particles in a system
@@ -60,6 +62,10 @@ public class ParticleSystem {
     
     private void emitParticle(Vector3f center) {
         Vector3f velocity = null;
+        float rand = (float)Math.random()*squaredValue + center.x;
+        float rand2 = (float)Math.random()*squaredValue + center.z;
+        System.out.println(rand + ", " + rand2);
+        Vector3f position = new Vector3f(rand, center.y, rand2);
         if(direction!=null){
             velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
         }else{
@@ -69,7 +75,7 @@ public class ParticleSystem {
         velocity.scale(generateValue(averageSpeed, speedError));
         float scale = generateValue(averageScale, scaleError);
         float lifeLength = generateValue(averageLifeLength, lifeError);
-        new Particle(texture, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale);
+        new Particle(texture, new Vector3f(position), velocity, gravityComplient, lifeLength, generateRotation(), scale);
     }
     
     public void setDirection(Vector3f direction, float deviation) {
