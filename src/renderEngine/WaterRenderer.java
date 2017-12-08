@@ -15,8 +15,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import toolbox.Maths;
-import water.WaterFrameBuffer;
-import water.WaterTile;
+
 import toolbox.WaterFrameBuffer;
 import entities.Camera;
 import entities.Light;
