@@ -18,10 +18,6 @@ import org.lwjgl.util.vector.Vector4f;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
-import gui.GuiRenderer;
-import gui.GuiTexture;
-import models.RawModel;
-import models.TexturedModel;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -35,8 +31,7 @@ import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import textures.WaterTile;
-import toolbox.OBJLoader;
-import toolbox.WaterFrameBuffer;
+import toolbox.FrameBuffer;
 
 /**
  * The Class MainGameLoop.
@@ -143,10 +138,12 @@ public class MainGameLoop {
 				reflectionFactor = 5.0f,
 				distortionStrength = 0.06f;
 		
-		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
+		FrameBuffer reflectionFrameBuffer = new FrameBuffer(320, 180, 2);
+		FrameBuffer refractionFrameBuffer = new FrameBuffer(1280, 720, 1);
+		
 		WaterShader waterShader = new WaterShader();
 		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(),
-				waterFrameBuffer);
+				reflectionFrameBuffer, refractionFrameBuffer);
 		
 
 		// Creates a plane at a position (the x and y position is in the centre of the
@@ -185,7 +182,7 @@ public class MainGameLoop {
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			
 			//Binds the reflectionBuffer to be rendered to. 
-			waterFrameBuffer.bindReflectionFrameBuffer();
+			reflectionFrameBuffer.bindFrameBuffer();
 			
 			// The height difference between the camera and the waterTile
 			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight());
@@ -200,11 +197,11 @@ public class MainGameLoop {
 			camera.moveFromReflection(camera, cameraDistance);
 			
 			//Binds the refractionBuffer to be rendered to. 
-			waterFrameBuffer.bindRefractionFrameBuffer();
+			refractionFrameBuffer.bindFrameBuffer();
 			//Render the scene to the bound frameBuffer (here the refractionBuffer)
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, waterTile.getHeight() + 1f));
 			//Unbinds the refractionbuffer to the standard frameBuffer
-			waterFrameBuffer.unbindFrameBuffer();
+			refractionFrameBuffer.unbindFrameBuffer();
 			
 			/**
 			 * Disables clipping planes for the main renderer. This command isn't always registered. For the clipPlane not to affect the main
@@ -232,8 +229,9 @@ public class MainGameLoop {
 		ParticleMaster.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
-		//guiRenderer.cleanUp();
 		waterShader.cleanUp();
+		reflectionFrameBuffer.cleanUp();
+		refractionFrameBuffer.cleanUp();
 
 		// Close
 		DisplayManager.closeDisplay();

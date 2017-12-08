@@ -14,6 +14,7 @@ import entities.Camera;
 import entities.Light;
 import models.RawModel;
 import shaders.SkyboxShader;
+import terrains.Terrain;
 import toolbox.Colors;
 
 /**
@@ -76,7 +77,7 @@ public class SkyBoxRenderer {
 	private float z = 1000;
 	
 	/** The intensity. */
-	private float intensity = 0.1f;
+	private float intensity = 0.9f;
 	
 	/** The day color. */
 	private Vector3f dayColor = Colors.convertToFloat(new Vector3f(93, 94, 96));
@@ -125,53 +126,40 @@ public class SkyBoxRenderer {
 	 * Day night.
 	 */
 	private void dayNight() {
-		time += DisplayManager.getFrameTimeSeconds() * 1000;
+		float timeHour = DisplayManager.getInGameHour();
 
+		
 		int cube;
 		int cube1;
 		float blend = 0;
 
 		// Time variables to easier manipulate speed of the cycle
 		float start = 0;
-		float morning = 5000;
-		float noon = 10000;
-		float night = 19000;
-		float end = 24000;
+		float morning = 5;
+		float noon = 10;
+		float night = 19;
+		float end = 24;
 
-		time %= end;
+		;
 
-		if (time >= start && time < morning) {
+		if (timeHour >= start && timeHour < morning) {
 			cube = nightTextureID;
 			cube1 = nightTextureID;
-			blend = (time - start) / (morning - start);
-			x += 0.2;
-			y += 0.2;
-			z -= 0.2;
-			intensity += 0.0002f;
-		} else if (time >= morning && time < noon) {
+			blend = (timeHour - start) / (morning - start);
+			intensity += 0.2f;
+		} else if (timeHour >= morning && timeHour < noon) {
 			cube = nightTextureID;
 			cube1 = textureID;
-			blend = (time - morning) / (noon - morning);
-			x -= 0.2;
-			y += 0.2;
-			z -= 0.2;
-			intensity += 0.0016f;
-		} else if (time >= noon && time < night) {
+			blend = (timeHour - morning) / (noon - morning);
+
+		} else if (timeHour >= noon && timeHour < night) {
 			cube = textureID;
 			cube1 = textureID;
-			blend = (time - noon) / (night - noon);
-			x -= 0.111;
-			y -= 0.111;
-			z += 0.111;
-			intensity -= 0.000555556f;
+			blend = (timeHour - noon) / (night - noon);
 		} else {
 			cube = textureID;
 			cube1 = nightTextureID;
-			blend = (time - night) / (end - night);
-			x += 0.2;
-			y -= 0.2;
-			z += 0.2;
-			intensity -= 0.00008f;
+			blend = (timeHour - night) / (end - night);
 		}
 
 		if (intensity > 1) {
@@ -183,7 +171,6 @@ public class SkyBoxRenderer {
 		}
 
 		Light.setIntensity(new Vector3f(intensity, intensity, intensity));
-		Light.setPosition(x, y, z);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, cube);
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);

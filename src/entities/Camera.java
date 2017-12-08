@@ -118,6 +118,25 @@ public class Camera {
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			System.exit(0);
 		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
+			System.out.println(position);
+		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
+			Light.setPosition(9000, 10000, 9000);
+		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
+			Light.setPosition(3000, 1000, 5000);
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_K)) {
+			Light.setPosition(5000, 1000, 7000);
+		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
+			Light.setPosition(5000, 1000, 3000);
+		}
 
 		cameraPosition = position;
 	}

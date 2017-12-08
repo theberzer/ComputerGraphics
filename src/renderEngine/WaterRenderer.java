@@ -18,7 +18,7 @@ import models.RawModel;
 import shaders.WaterShader;
 import textures.WaterTile;
 import toolbox.Maths;
-import toolbox.WaterFrameBuffer;
+import toolbox.FrameBuffer;
 
 /**
  * The Class WaterRenderer.
@@ -43,7 +43,9 @@ public class WaterRenderer {
 	private WaterShader shader;
 	
 	/** The wfb. */
-	private WaterFrameBuffer wfb;
+	private FrameBuffer reflectionBuffer;
+	
+	private FrameBuffer refractionBuffer;
 
 	/** The Du dv texture. */
 	private int DuDvTexture;
@@ -62,9 +64,11 @@ public class WaterRenderer {
 	 * @param projectionMatrix the projection matrix
 	 * @param wfb the wfb
 	 */
-	public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffer wfb) {
+	public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, FrameBuffer reflectionBuffer, 
+			FrameBuffer refractionBuffer) {
 		this.shader = shader;
-		this.wfb = wfb;
+		this.reflectionBuffer = reflectionBuffer;
+		this.refractionBuffer = refractionBuffer;
 		DuDvTexture = loader.loadTexture(DUDV_MAP);
 		normalMap = loader.loadTexture(NORMAL_MAP);
 		shader.start();
@@ -103,7 +107,7 @@ public class WaterRenderer {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		// This value 60 should be the fps the game is running at.
-		moveFactor += waveSpeed * DisplayManager.getFrameTimeSeconds();
+		moveFactor += WAVE_SPEED * DisplayManager.getDelta();
 		moveFactor %= 1;
 		shader.loadMoveFactor(moveFactor);
 		shader.loadLight(light);
@@ -115,10 +119,10 @@ public class WaterRenderer {
 		GL20.glEnableVertexAttribArray(0);
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, wfb.getReflectionTexture());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, reflectionBuffer.getColourTexture());
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, wfb.getRefractionTexture());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, refractionBuffer.getColourTexture());
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, DuDvTexture);
@@ -127,7 +131,7 @@ public class WaterRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE4);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, wfb.getRefractionDepthBuffer());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, refractionBuffer.getDepthTexture());
 
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

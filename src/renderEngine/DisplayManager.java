@@ -28,12 +28,12 @@ public class DisplayManager {
 	
 	/** The Constant FPS_CAP. */
 	private static final int FPS_CAP = 120;
-
-	/** The delta. */
+		
+	private static long lastFrameTime;
+		
 	private static float delta;
 	
-	/** The last frame time. */
-	private static long lastFrameTime;
+	private static float time;
 
 	/**
 	 * Creates the display.
@@ -49,7 +49,7 @@ public class DisplayManager {
 			e.printStackTrace();
 		}
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
-		lastFrameTime = getCurrentTime();
+		lastFrameTime = getTime();
 	}
 
 	/**
@@ -57,10 +57,11 @@ public class DisplayManager {
 	 */
 	public static void updateDisplay() {
 		Display.sync(FPS_CAP);
-		long currentFrameTime = getCurrentTime();
-		delta = (currentFrameTime - lastFrameTime) / 1000f;
-		lastFrameTime = currentFrameTime;
 		Display.update();
+		long currentFrameTime = getTime();
+	    delta = (currentFrameTime - lastFrameTime) / 1000f;
+	    lastFrameTime = currentFrameTime;
+	    time += getDelta() * 1000;
 	}
 
 	/**
@@ -69,22 +70,18 @@ public class DisplayManager {
 	public static void closeDisplay() {
 		Display.destroy();
 	}
-
-	/**
-	 * Gets the frame time seconds.
-	 *
-	 * @return the frame time seconds
-	 */
-	public static float getFrameTimeSeconds() {
-		return delta;
+	
+	public static float getDelta() {
+	    return delta;
 	}
+
 
 	/**
 	 * Gets the current time.
 	 *
 	 * @return the current time
 	 */
-	private static long getCurrentTime() {
+	private static long getTime() {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 
@@ -94,7 +91,6 @@ public class DisplayManager {
 	 * @return the width
 	 */
 	public static int getWidth() {
-
 		return WIDTH;
 	}
 
@@ -106,5 +102,18 @@ public class DisplayManager {
 	public static int getHeight() {
 		return HEIGHT;
 	}
+	
+	public  static float getInGameHour() {
+		float timeMin = time / 60f;
+		float timeHour = timeMin / 60f;
+		
+		timeHour %= 24;
+		System.out.println(timeHour);
+		
+
+		return timeHour;
+	}
+	
+	
 
 }
