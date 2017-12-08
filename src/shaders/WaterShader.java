@@ -62,7 +62,17 @@ public class WaterShader extends ShaderProgram {
 	
 	/** The location plane far. */
 	private int location_planeFar;
-
+	
+	/** The location tiling. */
+	private int location_tiling;
+	
+	/** The location reflectionFactor */
+	private int location_reflectionFactor;
+	
+	/** The location distortionStrength */
+	private int location_distortionStrength;
+	
+	
 	/**
 	 * Instantiates a new water shader.
 	 */
@@ -97,7 +107,9 @@ public class WaterShader extends ShaderProgram {
 		location_depthTexture = getUniformLocation("depthTexture");
 		location_planeNear = getUniformLocation("planeNear");
 		location_planeFar = getUniformLocation("planeFar");
-
+		location_tiling = getUniformLocation("tiling");
+		location_reflectionFactor = getUniformLocation("reflectionFactor");
+		location_distortionStrength = getUniformLocation("distortionStrength");
 	}
 
 	/**
@@ -166,5 +178,16 @@ public class WaterShader extends ShaderProgram {
 		super.loadFloat(location_planeNear, MastrerRendrer.getNearPlane());
 		super.loadFloat(location_planeFar, MastrerRendrer.getFarPlane());
 	}
-
+	
+	public void loadTiling(float tiling) {
+		super.loadFloat(location_tiling, tiling);
+	}
+	
+	public void loadReflectionFactor(float factor) {
+		super.loadFloat(location_reflectionFactor, factor);
+	}
+	
+	public void loadDistortionStrength(float distortionStrength) {
+		super.loadFloat(location_distortionStrength, distortionStrength);
+	}
 }

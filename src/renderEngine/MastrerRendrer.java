@@ -170,8 +170,8 @@ public class MastrerRendrer {
 	 * Cleans up the shaders.
 	 */
 	public void cleanUp() {
-		shader.cleanUP();
-		terrainShader.cleanUP();
+		shader.cleanUp();
+		terrainShader.cleanUp();
 	}
 
 	/**

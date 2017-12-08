@@ -8,6 +8,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import terrains.Terrain;
+import textures.WaterTile;
 
 /**
  * The Class Camera.
@@ -190,5 +191,16 @@ public class Camera {
 	public void invertPitch() {
 		pitch = -pitch;
 	}
-
+	
+	public void moveToReflection(Camera camera, float cameraDistance) {
+		camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y - cameraDistance,
+				camera.getPosition().z));
+		camera.invertPitch();
+	}
+	
+	public void moveFromReflection(Camera camera, float cameraDistance) {
+		camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y + cameraDistance,
+				camera.getPosition().z));
+		camera.invertPitch();
+	}
 }

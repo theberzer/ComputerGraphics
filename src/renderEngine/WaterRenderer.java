@@ -81,8 +81,9 @@ public class WaterRenderer {
 	 * @param camera the camera
 	 * @param light the light
 	 */
-	public void render(List<WaterTile> watertiles, Camera camera, Light light) {
-		prepareRender(camera, light);
+	public void render(List<WaterTile> watertiles, Camera camera, Light light, float tiling, float waveSpeed, float reflectionFactor,
+			float distortionStrength) {
+		prepareRender(camera, light, tiling, waveSpeed, reflectionFactor, distortionStrength);
 		for (WaterTile tile : watertiles) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
 					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, WaterTile.TILE_SIZE);
@@ -98,15 +99,18 @@ public class WaterRenderer {
 	 * @param camera the camera
 	 * @param light the light
 	 */
-	private void prepareRender(Camera camera, Light light) {
+	private void prepareRender(Camera camera, Light light, float tiling, float waveSpeed, float reflectionFactor, float distortionStrength) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		// This value 60 should be the fps the game is running at.
-		moveFactor += WAVE_SPEED * DisplayManager.getFrameTimeSeconds();
+		moveFactor += waveSpeed * DisplayManager.getFrameTimeSeconds();
 		moveFactor %= 1;
 		shader.loadMoveFactor(moveFactor);
 		shader.loadLight(light);
 		shader.loadProjectionPlanes();
+		shader.loadTiling(tiling);
+		shader.loadReflectionFactor(reflectionFactor);
+		shader.loadDistortionStrength(distortionStrength);
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 

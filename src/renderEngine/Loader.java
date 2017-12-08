@@ -132,7 +132,7 @@ public class Loader {
 	/**
 	 * Clean UP.
 	 */
-	public void cleanUP() {
+	public void cleanUp() {
 		for (int vao : vaos) {
 			GL30.glDeleteVertexArrays(vao);
 		}

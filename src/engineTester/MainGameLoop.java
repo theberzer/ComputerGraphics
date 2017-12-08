@@ -70,24 +70,36 @@ public class MainGameLoop {
 		Camera camera = new Camera();
 		camera.setPosition(new Vector3f(5000, terrain.getHeight(5000, 5000) + 50, 5000));
 
+		/*
+		 * If game objects are clipping, then this w component should be increased
+		 */
+		Vector4f clipPlane = new Vector4f(0, -1, 0, 1000);
+		
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer(loader);
 
 		/**
-		 * GUI
-		 */
-
-		//GuiRenderer guiRenderer = new GuiRenderer(loader);
-		//List<GuiTexture> guis = new ArrayList<GuiTexture>();
-
-		/**
 		 * Water
 		 */
+		
+		
+		/**
+		 * Variables to change the appearance of the water
+		 * wateTiling: Changes the sizes of the waves (in x/z direction)
+		 * WaveSpeed: Changes how fast the distortion travels over the water
+		 * reflectionFactor: Decides the amount of reflection/specular highlights. The larger the number, the LESS amount of reflectivity
+		 * distortionStrength: Changes the amount of distortion. If this is increased, then reflectionFactor should probably also be increased
+		 */
+		float waveTiling = 15.0f, 
+				waveSpeed = 0.01f,
+				reflectionFactor = 5.0f,
+				distortionStrength = 0.06f;
+		
 		WaterFrameBuffer waterFrameBuffer = new WaterFrameBuffer();
 		WaterShader waterShader = new WaterShader();
 		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(),
 				waterFrameBuffer);
-		Vector4f clipPlane = new Vector4f(0, -1, 0, 100);
+		
 
 		// Creates a plane at a position (the x and y position is in the centre of the
 		// side)
@@ -111,39 +123,48 @@ public class MainGameLoop {
 					renderer.processEntity(e);
 				}
 			}
-
+			
+			//Enables clipping planes. For this to be utilized, the gl_ClipDistance[0] must be implemented in the vertexShader. 
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-
+			
+			//Binds the reflectionBuffer to be rendered to. 
 			waterFrameBuffer.bindReflectionFrameBuffer();
-			// Move the camera to properly capture the "reflected" image
+			
+			// The height difference between the camera and the waterTile
 			float cameraDistance = 2 * (camera.getPosition().y - waterTile.getHeight());
-			camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y - cameraDistance,
-					camera.getPosition().z));
-			camera.invertPitch();
-
+			
+			//Moves the camera to correct position under the plane to capture the reflection
+			camera.moveToReflection(camera, cameraDistance);
+			
+			//Render the scene to the bound frameBuffer (here the reflectionBuffer)
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight() + 1f));
-
-			camera.setPosition(new Vector3f(camera.getPosition().x, camera.getPosition().y + cameraDistance,
-					camera.getPosition().z));
-			// Moves the camera back to the original position
-			// camera.getPosition().y += cameraDistance;
-			camera.invertPitch();
-
+			
+			//Moves the camera back to the correct player/camera position
+			camera.moveFromReflection(camera, cameraDistance);
+			
+			//Binds the refractionBuffer to be rendered to. 
 			waterFrameBuffer.bindRefractionFrameBuffer();
+			//Render the scene to the bound frameBuffer (here the refractionBuffer)
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, -1, 0, waterTile.getHeight() + 1f));
+			//Unbinds the refractionbuffer to the standard frameBuffer
 			waterFrameBuffer.unbindFrameBuffer();
-			// //////////////////////////////////////////////
-
+			
+			/**
+			 * Disables clipping planes for the main renderer. This command isn't always registered. For the clipPlane not to affect the main
+			 * renderer, increase the w value of the Vec4 variable clipPlane to a high number.
+			 */
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-
+			
+			//Renders the scene to the standard frameBuffer
 			renderer.render(terrains, entities, light, camera, clipPlane);
-
-			waterRenderer.render(waterTileList, camera, light);
+			//Renders the water to the standard frameBuffer
+			waterRenderer.render(waterTileList, camera, light, waveTiling, waveSpeed, reflectionFactor, distortionStrength);
 			// guiRenderer.render(guis);
-
+			
+			
 			// Updates the display once per frame
 			DisplayManager.updateDisplay();
-
+			
 			renderer.cleanLists();
 
 		}
@@ -151,9 +172,9 @@ public class MainGameLoop {
 		// Clean up - deletes instances of the object so that it does not clog
 		// up your memory
 		renderer.cleanUp();
-		loader.cleanUP();
+		loader.cleanUp();
 		//guiRenderer.cleanUp();
-		waterShader.cleanUP();
+		waterShader.cleanUp();
 
 		// Close
 		DisplayManager.closeDisplay();
