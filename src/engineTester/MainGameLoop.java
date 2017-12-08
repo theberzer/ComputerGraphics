@@ -12,7 +12,6 @@ import models.TexturedModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -68,7 +67,7 @@ public class MainGameLoop {
 		
 		Light light = new Light();
 		Camera camera = new Camera();
-		camera.setPosition(new Vector3f(2000,50, 2000));
+		camera.setPosition(new Vector3f(5000,50, 5000));
 
 		// Create a new instance of the MasterRendrer object
 		MastrerRendrer renderer = new MastrerRendrer(loader);
@@ -89,7 +88,7 @@ public class MainGameLoop {
 		
 		
 		//Creates a plane at a position (the x and y position is in the centre of the side)
-		WaterTile waterTile = new WaterTile(2000,2000,-50);
+		WaterTile waterTile = new WaterTile(5000, -20, 5000);
 
 		
 		
