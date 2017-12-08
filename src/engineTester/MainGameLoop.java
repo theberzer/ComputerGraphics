@@ -163,8 +163,8 @@ public class MainGameLoop {
 				reflectionFactor = 5.0f,
 				distortionStrength = 0.06f;
 		
-		FrameBuffer reflectionFrameBuffer = new FrameBuffer(320, 180, 2);
-		FrameBuffer refractionFrameBuffer = new FrameBuffer(1280, 720, 1);
+		FrameBuffer reflectionFrameBuffer = new FrameBuffer(320, 180, FrameBuffer.DEPTH_RENDER_BUFFER );
+		FrameBuffer refractionFrameBuffer = new FrameBuffer(1280, 720, FrameBuffer.DEPTH_TEXTURE);
 		
 		WaterShader waterShader = new WaterShader();
 		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(),
@@ -226,9 +226,12 @@ public class MainGameLoop {
 			
 			//Render the scene to the bound frameBuffer (here the reflectionBuffer)
 			renderer.render(terrains, entities, light, camera, new Vector4f(0, 1, 0, -waterTile.getHeight() + 1f));
+			ParticleMaster.renderParticles(camera);
 			
 			//Moves the camera back to the correct player/camera position
 			camera.moveFromReflection(camera, cameraDistance);
+			
+			reflectionFrameBuffer.unbindFrameBuffer();
 			
 			//Binds the refractionBuffer to be rendered to. 
 			refractionFrameBuffer.bindFrameBuffer();
